@@ -1,9 +1,7 @@
 package com.copetti.threeD.scenes;
 
-
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import java.io.IOException;
@@ -18,6 +16,8 @@ import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.Pentagon;
 import com.copetti.threeD.opengl.array.ArrayBuffer;
 import com.copetti.threeD.opengl.array.ArrayBufferFactory;
+import com.copetti.threeD.opengl.shader.ShaderProgram;
+import com.copetti.threeD.opengl.shader.ShaderProgramBuilder;
 
 
 public class PentagonScene implements GameScene
@@ -27,12 +27,10 @@ public class PentagonScene implements GameScene
 	private String fragmentShaderContent;
 
 	private int vao;
-	private int shader;
+	private ShaderProgram shaderProgram;
 	ArrayBuffer positions;
-	
-	private float angle;
 
-	private float[] vertexData;
+	private float angle;
 
 	public PentagonScene() throws IOException
 	{
@@ -50,39 +48,6 @@ public class PentagonScene implements GameScene
 		return allText;
 	}
 
-	private int compileShader(int shaderType, String code)
-	{
-		int shader = glCreateShader(shaderType);
-		glShaderSource(shader, code);
-		glCompileShader(shader);
-
-		if (glGetShaderi(shaderType,
-				GL_COMPILE_STATUS) == GL_FALSE) { throw new RuntimeException(
-						"Failed to compile Shader!"); }
-
-		return shader;
-	}
-
-	private int linkProgram(int... shaders)
-	{
-		int program = glCreateProgram();
-		for( int shader : shaders )
-			glAttachShader(program, shader);
-
-		glLinkProgram(program);
-		if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE)
-			throw new RuntimeException(
-					"Failed to link shaders: " + glGetProgramInfoLog(program));
-
-		for( int shader : shaders )
-		{
-			glDetachShader(program, shader);
-			glDeleteShader(shader);
-		}
-
-		return program;
-	}
-
 	public void onEnter()
 	{
 		System.out.println("On enter!");
@@ -90,22 +55,23 @@ public class PentagonScene implements GameScene
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 
-		vertexData = Pentagon.createPentagon(new Vector2f(0f, .5f), 0.5f);
-
-
+		float[] vertexData = Pentagon.createPentagon(new Vector2f(0f, .5f),
+				0.5f);
 		positions = ArrayBufferFactory.newArrayBuffer(2, vertexData);
-		
-		int vertex = compileShader(GL_VERTEX_SHADER, vertexShaderContent);
-		int fragment = compileShader(GL_FRAGMENT_SHADER, fragmentShaderContent);
 
-		shader = linkProgram(vertex, fragment);
+		shaderProgram = ShaderProgramBuilder //
+				.newBuilder() //
+				.attachVertexShader(vertexShaderContent) //
+				.attachFragmentShader(fragmentShaderContent) //
+				.build();
+
 		glBindVertexArray(0);
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
 	public void onExit()
 	{
-		glDeleteProgram(shader);
+		glDeleteProgram(shaderProgram.getShaderId());
 		glDeleteVertexArrays(vao);
 	}
 
@@ -119,20 +85,22 @@ public class PentagonScene implements GameScene
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.0f, 0f, 0.4f, 1.0f);
 
-		glUseProgram(shader);
+		shaderProgram.bind();
 		glBindVertexArray(vao);
 
 		// uWorld
 		FloatBuffer transform = BufferUtils.createFloatBuffer(16);
 		new Matrix4f().rotateZ(angle).get(transform);
-		int uWorld = glGetUniformLocation(shader, "uWorld");
+		int uWorld = glGetUniformLocation(shaderProgram.getShaderId(),
+				"uWorld");
 		glEnableVertexAttribArray(uWorld);
 		glUniformMatrix4fv(uWorld, false, transform);
 
 		// aPosition
-		int aPosition = glGetAttribLocation(shader, "aPosition");
+		int aPosition = glGetAttribLocation(shaderProgram.getShaderId(),
+				"aPosition");
 		glEnableVertexAttribArray(aPosition);
-		
+
 		positions.bind();
 		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
 		positions.draw();

@@ -3,12 +3,8 @@ package com.copetti.threeD.opengl.shader;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-import java.nio.FloatBuffer;
-
-import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
-
 import com.copetti.threeD.opengl.array.ArrayBuffer;
+import com.copetti.threeD.opengl.uniform.UniformType;
 
 import lombok.Getter;
 
@@ -60,14 +56,13 @@ public class ShaderProgram
 		glDisableVertexAttribArray(positionLocation);
 	}
 
-	public void setUniform(String uniformName, Matrix4f matrix4f)
+	public void setUniform(String uniformName, Object uniform)
 	{
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-		matrix4f.get(buffer);
-
 		int uniformId = glGetUniformLocation(shaderId, uniformName);
+		UniformType uniType = UniformType.fromObject(uniform);
+
 		glEnableVertexAttribArray(uniformId);
-		glUniformMatrix4fv(uniformId, false, buffer);
+		uniType.setUniform(uniformId, uniform);
 	}
 
 	public void clearUniform(String uniformName)

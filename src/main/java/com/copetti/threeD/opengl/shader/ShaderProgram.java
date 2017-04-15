@@ -1,6 +1,12 @@
 package com.copetti.threeD.opengl.shader;
 
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+
+import org.joml.Matrix4f;
+import com.copetti.threeD.opengl.array.ArrayBuffer;
 
 import lombok.Getter;
 
@@ -23,5 +29,29 @@ public class ShaderProgram
 	public void unbind()
 	{
 		glUseProgram(0);
+	}
+
+	public void setAttribute(String attributeName, ArrayBuffer array)
+	{
+		if (array == null)
+			throw new IllegalArgumentException("Array is null when setting the attribute: " + attributeName);
+		
+		int positionLocation = glGetAttribLocation(shaderId, attributeName);
+		
+		if (positionLocation == GL_INVALID_OPERATION)
+			throw new IllegalArgumentException("Failed to locate attribute: " + attributeName);
+		
+		glEnableVertexAttribArray(positionLocation);
+		glVertexAttribPointer(positionLocation, array.getElementsSize(), GL_FLOAT, false, 0, 0);
+	}
+	
+	public void clearAttribute(String attributeName)
+	{
+		int positionLocation = glGetAttribLocation(shaderId, attributeName);
+		
+		if (positionLocation == GL_INVALID_OPERATION)
+			throw new IllegalArgumentException("Failed to locate attribute: " + attributeName);
+		
+		glDisableVertexAttribArray(positionLocation);
 	}
 }

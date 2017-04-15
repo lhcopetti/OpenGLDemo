@@ -3,20 +3,18 @@ package com.copetti.threeD.opengl.array;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArrayBuffer
 {
 
 	private @Getter int bufferId;
 	private @Getter int vertexCount;
-
-	protected ArrayBuffer(int bufferId, int vertexCount)
-	{
-		this.bufferId = bufferId;
-		this.vertexCount = vertexCount;
-	}
+	private @Getter int elementsSize;
 
 	public ArrayBuffer bind()
 	{

@@ -12,6 +12,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.Pentagon;
 import com.copetti.threeD.opengl.array.ArrayBuffer;
@@ -34,18 +35,8 @@ public class PentagonScene implements GameScene
 
 	public PentagonScene() throws IOException
 	{
-		vertexShaderContent = readAllText("pentagon_shader.vert");
-		fragmentShaderContent = readAllText("pentagon_shader.frag");
-	}
-
-	private String readAllText(String resourcePath) throws IOException
-	{
-		Scanner scanner = new Scanner(
-				getClass().getClassLoader().getResourceAsStream(resourcePath),
-				"UTF-8");
-		String allText = scanner.useDelimiter("\\A").next();
-		scanner.close();
-		return allText;
+		vertexShaderContent = Resource.readAllText("pentagon_shader.vert");
+		fragmentShaderContent = Resource.readAllText("pentagon_shader.frag");
 	}
 
 	public void onEnter()
@@ -89,6 +80,8 @@ public class PentagonScene implements GameScene
 		glBindVertexArray(vao);
 
 		// uWorld
+		shaderProgram.setUniform("uWorld", new Matrix4f().rotateZ(angle));
+		
 		FloatBuffer transform = BufferUtils.createFloatBuffer(16);
 		new Matrix4f().rotateZ(angle).get(transform);
 		int uWorld = glGetUniformLocation(shaderProgram.getShaderId(),
@@ -97,15 +90,11 @@ public class PentagonScene implements GameScene
 		glUniformMatrix4fv(uWorld, false, transform);
 
 		// aPosition
-		int aPosition = glGetAttribLocation(shaderProgram.getShaderId(),
-				"aPosition");
-		glEnableVertexAttribArray(aPosition);
-
 		positions.bind();
-		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
+		shaderProgram.setAttribute("aPosition", positions);
 		positions.draw();
 
-		glDisableVertexAttribArray(aPosition);
+		shaderProgram.clearAttribute("aPosition");
 		positions.unbind();
 		glBindVertexArray(0);
 		glUseProgram(0);

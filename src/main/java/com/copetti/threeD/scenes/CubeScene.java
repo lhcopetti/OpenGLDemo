@@ -1,21 +1,20 @@
 package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-import java.nio.FloatBuffer;
 import java.util.function.BinaryOperator;
-import java.util.stream.IntStream;
 
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.input.InputEvent;
+import com.copetti.threeD.opengl.array.ArrayBuffer;
+import com.copetti.threeD.opengl.array.ArrayBufferFactory;
+import com.copetti.threeD.opengl.shader.ShaderProgram;
+import com.copetti.threeD.opengl.shader.ShaderProgramBuilder;
 
 
 public class CubeScene implements GameScene
@@ -51,53 +50,18 @@ public class CubeScene implements GameScene
 	private String fragmentShader;
 
 	private int vao;
-	private int shaderProgram;
+	private ShaderProgram shaderProgram;
 
-	private int positions;
-	private float[] vertexData;
+	private ArrayBuffer positions;
+	private ArrayBuffer colors;
 
 	private float xAngle;
 	private float yAngle;
-	private float[] colorsData;
-	private int colors;
 
 	public CubeScene()
 	{
 		vertexShader = Resource.readAllText("cube_shader.vert");
 		fragmentShader = Resource.readAllText("cube_shader.frag");
-	}
-
-	private int compileShader(int shaderType, String code)
-	{
-		int shader = glCreateShader(shaderType);
-		glShaderSource(shader, code);
-		glCompileShader(shader);
-
-		if (glGetShaderi(shaderType,
-				GL_COMPILE_STATUS) == GL_FALSE) { throw new RuntimeException(
-						"Failed to compile Shader!"); }
-
-		return shader;
-	}
-
-	private int linkProgram(int... shaders)
-	{
-		int program = glCreateProgram();
-		for( int shader : shaders )
-			glAttachShader(program, shader);
-
-		glLinkProgram(program);
-		if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE)
-			throw new RuntimeException(
-					"Failed to link shaders: " + glGetProgramInfoLog(program));
-
-		for( int shader : shaders )
-		{
-			glDetachShader(program, shader);
-			glDeleteShader(shader);
-		}
-
-		return program;
 	}
 
 	@Override
@@ -152,7 +116,7 @@ public class CubeScene implements GameScene
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 
-		vertexData = new float[]
+		float[] vertexData = new float[]
 		{ //
 				/* Front */
 				-.25f, .25f, 0.25f, //
@@ -187,54 +151,50 @@ public class CubeScene implements GameScene
 				-.25f, -.25f, 0.25f, //
 
 				/* Up */
-				-.25f, .25f, .25f, .25f, .25f, .25f, -.25f, .25f, -.25f, -.25f,
-				.25f, -.25f, .25f, .25f, .25f, .25f, .25f, -.25f,
+				-.25f, .25f, .25f, //
+				.25f, .25f, .25f, //
+				-.25f, .25f, -.25f, //
+				-.25f, .25f, -.25f, //
+				.25f, .25f, .25f, //
+				.25f, .25f, -.25f, //
 
 				/* Down */
-				.25f, -.25f, -.25f, .25f, -.25f, .25f, -.25f, -.25f, -.25f,
-				-.25f, -.25f, -.25f, .25f, -.25f, .25f, -.25f, -.25f, .25f, };
+				.25f, -.25f, -.25f, //
+				.25f, -.25f, .25f, //
+				-.25f, -.25f, -.25f, //
+				-.25f, -.25f, -.25f, //
+				.25f, -.25f, .25f, //
+				-.25f, -.25f, .25f, };
 
-		colorsData = new float[]
+		float[] colorsData = new float[]
 		{ //
-				1.0f, 0.8f, 0.6f, //
-				0.8f, 0.6f, 0.4f, //
-				0.6f, 0.4f, 0.2f, //
-				0.4f, 0.2f, 0.f, //
-				0.2f, 0.f, 1.f, //
-				0.f, 1.0f, 0.8f, //
+				1.0f, 1.0f, 1.0f, //
+				0.0f, 0.0f, 0.0f, //
+				1.f, 0.0f, 0.0f, //
+				0f, 1f, 0.f, //
+				0.0f, 0.f, 1.f, //
+				0.5f, .5f, 0.5f, //
 
 		}; //
 
-		/* Vertexes Buffer */
-		FloatBuffer vertexes = BufferUtils.createFloatBuffer(vertexData.length);
-		vertexes.put(vertexData).flip();
-
-		positions = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
-		glBufferData(GL_ARRAY_BUFFER, vertexes, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		positions = ArrayBufferFactory.newArrayBuffer(3, vertexData);
 
 		/* Colors */
-		FloatBuffer colorData = BufferUtils
-				.createFloatBuffer(colorsData.length * 6);
-		for( int i = 0; i < colorsData.length; i++ )
-		{
-			final int index = i;
-			IntStream.rangeClosed(0, 5).forEach((v) -> {
-				colorData.put(colorsData, index, 1);
-			});
-		}
-		colorData.flip();
+		float[] arrayColors = new float[vertexData.length];
+		int gIndex = 0;
 
-		colors = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, colors);
-		glBufferData(GL_ARRAY_BUFFER, colorData, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		for( int i = 0; i < colorsData.length; i += 3 )
+			for( int j = 0; j < 6; j++ )
+				for( int k = 0; k < 3; k++ )
+					arrayColors[gIndex++] = colorsData[i + k];
 
-		int sVertex = compileShader(GL_VERTEX_SHADER, vertexShader);
-		int sFragment = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+		colors = ArrayBufferFactory.newArrayBuffer(3, arrayColors);
 
-		shaderProgram = linkProgram(sVertex, sFragment);
+		shaderProgram = ShaderProgramBuilder //
+				.newBuilder() //
+				.attachVertexShader(vertexShader) //
+				.attachFragmentShader(fragmentShader) //
+				.build();
 
 		glBindVertexArray(0);
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -243,10 +203,6 @@ public class CubeScene implements GameScene
 	@Override
 	public void onExit()
 	{
-		glDeleteBuffers(positions);
-		glDeleteBuffers(colors);
-
-		glDeleteProgram(shaderProgram);
 		glDeleteVertexArrays(vao);
 
 		glDisable(GL_CULL_FACE);
@@ -266,44 +222,30 @@ public class CubeScene implements GameScene
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.3f, 0.7f, 1.0f);
 
-		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
-
+		shaderProgram.bind();
 		/* Uniform: uWorld */
-		FloatBuffer angleBuffer = BufferUtils.createFloatBuffer(16);
-		getTransformationMatrix(angleBuffer);
-		int uWorld = glGetUniformLocation(shaderProgram, "uWorld");
-		glEnableVertexAttribArray(uWorld);
-		glUniformMatrix4fv(uWorld, false, angleBuffer);
+		shaderProgram.setUniform("uWorld", //
+				new Matrix4f() //
+						.rotateX(xAngle) //
+						.rotateY(yAngle));
 
-		/* Input: aPosition */
-		int aPosition = glGetAttribLocation(shaderProgram, "aPosition");
-		glEnableVertexAttribArray(aPosition);
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
-		glVertexAttribPointer(aPosition, 3, GL_FLOAT, false, 0, 0);
+		positions.bind();
+		shaderProgram.setAttribute("aPosition", positions);
 
-		/* Input: Color */
-		int aColor = glGetAttribLocation(shaderProgram, "aColor");
-		glEnableVertexAttribArray(aColor);
-		glBindBuffer(GL_ARRAY_BUFFER, colors);
-		glVertexAttribPointer(aColor, 3, GL_FLOAT, false, 0, 0);
+		colors.bind();
+		shaderProgram.setAttribute("aColor", colors);
 
-		/* Draw */
-		glDrawArrays(GL_TRIANGLES, 0, vertexData.length / 3);
+		positions.draw();
 
-		glDisableVertexAttribArray(uWorld);
-		glDisableVertexAttribArray(aPosition);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		positions.unbind();
+		colors.unbind();
+		shaderProgram.clearAttribute("aPosition");
+		shaderProgram.clearAttribute("aColor");
+		shaderProgram.clearUniform("uWorld");
+		shaderProgram.unbind();
 		glBindVertexArray(0);
-		glUseProgram(0);
-	}
-
-	private void getTransformationMatrix(FloatBuffer angleBuffer)
-	{
-		new Matrix4f() //
-				.rotateX(xAngle) //
-				.rotateY(yAngle) //
-				.get(angleBuffer); //
 	}
 
 }

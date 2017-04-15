@@ -10,7 +10,7 @@ public class ShaderProgramBuilderTest
 
 	@Rule
 	public ExpectedException expected = ExpectedException.none();
-	
+
 	@Test
 	public void buildWithoutAnyShaderAttached()
 	{
@@ -18,13 +18,23 @@ public class ShaderProgramBuilderTest
 		expected.expectMessage("No shader source is attached");
 		ShaderProgramBuilder.newBuilder().build();
 	}
-	
+
 	@Test
 	public void buildWithMissingVertexShader()
 	{
 		expected.expect(IllegalStateException.class);
 		expected.expectMessage("Vertex Shader is missing");
-		ShaderProgramBuilder.newBuilder().build();
+		ShaderProgramBuilder.newBuilder()
+				.attachFragmentShader("fragmentShaderSource").build();
 	}
-	
+
+	@Test
+	public void buildWithMissingFragmentShader()
+	{
+		expected.expect(IllegalStateException.class);
+		expected.expectMessage("Fragment Shader is missing");
+		ShaderProgramBuilder.newBuilder()
+				.attachVertexShader("vertexShaderSource").build();
+	}
+
 }

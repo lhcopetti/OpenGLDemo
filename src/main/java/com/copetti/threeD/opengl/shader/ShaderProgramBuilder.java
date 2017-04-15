@@ -20,11 +20,14 @@ public class ShaderProgramBuilder
 			throw new IllegalStateException("No shader source is attached");
 
 		if (vertexShader == null)
-			throw new IllegalStateException("Vertex Shader type is missing");
+			throw new IllegalStateException("Vertex Shader is missing");
+		
+		if (fragmentShader == null)
+			throw new IllegalStateException("Fragment Shader is missing");
 
 		return doBuild();
 	}
-
+	
 	public ShaderProgramBuilder attachVertexShader(String shaderSource)
 	{
 		vertexShader = new Shader(ShaderType.VERTEX_SHADER, shaderSource);

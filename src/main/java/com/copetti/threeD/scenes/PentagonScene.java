@@ -16,8 +16,8 @@ import org.lwjgl.BufferUtils;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.Pentagon;
-import com.copetti.threeD.opengl.ArrayBuffer;
-import com.copetti.threeD.opengl.ArrayBufferFactory;
+import com.copetti.threeD.opengl.array.ArrayBuffer;
+import com.copetti.threeD.opengl.array.ArrayBufferFactory;
 
 
 public class PentagonScene implements GameScene

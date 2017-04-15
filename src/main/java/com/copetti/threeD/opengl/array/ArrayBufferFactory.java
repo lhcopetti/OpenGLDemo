@@ -1,14 +1,9 @@
-package com.copetti.threeD.opengl;
+package com.copetti.threeD.opengl.array;
 
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-
-import javax.lang.model.util.Elements;
+import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
@@ -37,8 +32,9 @@ public class ArrayBufferFactory
 			float[] data)
 	{
 		int bufferId = glGenBuffers();
-		
-		ArrayBuffer array = new ArrayBuffer(bufferId, data.length / elementSize);
+
+		ArrayBuffer array = new ArrayBuffer(bufferId,
+				data.length / elementSize);
 		array.bind();
 		glBufferData(GL_ARRAY_BUFFER, wrap(data), GL_STATIC_DRAW);
 		array.unbind();
@@ -50,5 +46,31 @@ public class ArrayBufferFactory
 		FloatBuffer buf = BufferUtils.createFloatBuffer(data.length);
 		buf.put(data).flip();
 		return buf;
+	}
+
+	public static IndexBuffer newIndexBuffer(int[] data)
+	{
+		if (data == null) throw new NullPointerException("data is null");
+		if (data.length == 0)
+			throw new IllegalArgumentException("The data array is empty");
+
+		return createNewIndexBuffer(data);
+	}
+
+	private static IndexBuffer createNewIndexBuffer(int[] data)
+	{
+		IndexBuffer buffer = new IndexBuffer(glGenBuffers(), data.length);
+		buffer.bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, wrap(data), GL_STATIC_DRAW);
+		buffer.unbind();
+
+		return buffer;
+	}
+
+	private static IntBuffer wrap(int[] data)
+	{
+		IntBuffer buff = BufferUtils.createIntBuffer(data.length);
+		buff.put(data).flip();
+		return buff;
 	}
 }

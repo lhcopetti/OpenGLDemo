@@ -1,17 +1,14 @@
 package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.BufferUtils;
-
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.opengl.array.ArrayBuffer;
+import com.copetti.threeD.opengl.array.ArrayBufferFactory;
+import com.copetti.threeD.opengl.array.IndexBuffer;
 
 
 public class SquareScene implements GameScene
@@ -23,10 +20,11 @@ public class SquareScene implements GameScene
 	private int vao;
 	private int shaderProgram;
 
-	private int positions;
+	private ArrayBuffer positions;
+	private IndexBuffer indexes;
+
 	private float[] vertexData;
 	private int[] indexData;
-	private int indexes;
 
 	public SquareScene()
 	{
@@ -90,21 +88,8 @@ public class SquareScene implements GameScene
 				1, 0, 3 //
 		};
 
-		/* Index Buffer */
-		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indexData.length);
-		indexBuffer.put(indexData).flip();
-		indexes = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexes);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		FloatBuffer vertexes = BufferUtils.createFloatBuffer(vertexData.length);
-		vertexes.put(vertexData).flip();
-
-		positions = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
-		glBufferData(GL_ARRAY_BUFFER, vertexes, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		indexes = ArrayBufferFactory.newIndexBuffer(indexData);
+		positions = ArrayBufferFactory.newArrayBuffer(2, vertexData);
 
 		int sVertex = compileShader(GL_VERTEX_SHADER, vertexShader);
 		int sFragment = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -119,8 +104,6 @@ public class SquareScene implements GameScene
 	public void onExit()
 	{
 		glDeleteShader(shaderProgram);
-		glDeleteBuffers(positions);
-		glDeleteBuffers(indexes);
 		glDeleteVertexArrays(vao);
 
 		glDisable(GL_DEPTH_TEST);
@@ -144,15 +127,13 @@ public class SquareScene implements GameScene
 		int aPosition = glGetAttribLocation(shaderProgram, "aPosition");
 		glEnableVertexAttribArray(aPosition);
 
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
+		positions.bind();
 		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexes);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		indexes.draw();
 
 		glDisableVertexAttribArray(aPosition);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		positions.unbind();
 		glBindVertexArray(0);
 		glUseProgram(0);
 	}

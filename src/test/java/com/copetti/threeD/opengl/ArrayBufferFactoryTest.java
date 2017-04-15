@@ -4,6 +4,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.copetti.threeD.opengl.array.ArrayBufferFactory;
+
 
 public class ArrayBufferFactoryTest
 {
@@ -36,6 +38,22 @@ public class ArrayBufferFactoryTest
 		expected.expectMessage(
 				"Array count (10) is not divisible by ElementSize (4)");
 		ArrayBufferFactory.newArrayBuffer(4, new float[]
-		{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+		{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+	}
+
+	@Test
+	public void indexBufferWithNullParam()
+	{
+		expected.expect(NullPointerException.class);
+		expected.expectMessage("data is null");
+		ArrayBufferFactory.newIndexBuffer(null);
+	}
+
+	@Test
+	public void IntArrayCannotBeEmpty()
+	{
+		expected.expect(IllegalArgumentException.class);
+		expected.expectMessage("The data array is empty");
+		ArrayBufferFactory.newIndexBuffer(new int[] {});
 	}
 }

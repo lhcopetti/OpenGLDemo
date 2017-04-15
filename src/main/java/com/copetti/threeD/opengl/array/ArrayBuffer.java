@@ -1,4 +1,4 @@
-package com.copetti.threeD.opengl;
+package com.copetti.threeD.opengl.array;
 
 import lombok.Getter;
 

@@ -16,6 +16,8 @@ import org.lwjgl.BufferUtils;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.Pentagon;
+import com.copetti.threeD.opengl.ArrayBuffer;
+import com.copetti.threeD.opengl.ArrayBufferFactory;
 
 
 public class PentagonScene implements GameScene
@@ -25,8 +27,8 @@ public class PentagonScene implements GameScene
 	private String fragmentShaderContent;
 
 	private int vao;
-	private int positions;
 	private int shader;
+	ArrayBuffer positions;
 	
 	private float angle;
 
@@ -90,16 +92,9 @@ public class PentagonScene implements GameScene
 
 		vertexData = Pentagon.createPentagon(new Vector2f(0f, .5f), 0.5f);
 
-		FloatBuffer floatBuffer = BufferUtils
-				.createFloatBuffer(vertexData.length);
-		floatBuffer.put(vertexData).flip();
 
-		positions = glGenBuffers();
-
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
-		glBufferData(GL_ARRAY_BUFFER, floatBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+		positions = ArrayBufferFactory.newArrayBuffer(2, vertexData);
+		
 		int vertex = compileShader(GL_VERTEX_SHADER, vertexShaderContent);
 		int fragment = compileShader(GL_FRAGMENT_SHADER, fragmentShaderContent);
 
@@ -112,7 +107,6 @@ public class PentagonScene implements GameScene
 	{
 		glDeleteProgram(shader);
 		glDeleteVertexArrays(vao);
-		glDeleteBuffers(positions);
 	}
 
 	public void update(float deltaTime)
@@ -138,14 +132,13 @@ public class PentagonScene implements GameScene
 		// aPosition
 		int aPosition = glGetAttribLocation(shader, "aPosition");
 		glEnableVertexAttribArray(aPosition);
-		glBindBuffer(GL_ARRAY_BUFFER, positions);
-		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
-
 		
-		glDrawArrays(GL_TRIANGLES, 0, vertexData.length / 2);
+		positions.bind();
+		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
+		positions.draw();
 
 		glDisableVertexAttribArray(aPosition);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		positions.unbind();
 		glBindVertexArray(0);
 		glUseProgram(0);
 	}

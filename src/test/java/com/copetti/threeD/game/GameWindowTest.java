@@ -26,22 +26,12 @@ public class GameWindowTest
 	}
 
 	@Test
-	public void managersSceneLifeCycle()
-	{
-		Mockito.when(window.shouldClose()).thenReturn(true);
-		game.start();
-		Mockito.verify(scene).onEnter();
-		Mockito.verify(scene).onExit();
-	}
-
-	@Test
 	public void loopCallsUpWithCorrectDeltaTime()
 	{
 		game.loop(10.f);
 
 		Mockito.verify(scene).update(10.f);
 		Mockito.verify(scene).draw();
-
 		Mockito.verify(window).update();
 	}
 

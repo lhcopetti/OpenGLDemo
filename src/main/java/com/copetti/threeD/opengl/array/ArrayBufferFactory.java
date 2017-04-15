@@ -34,7 +34,7 @@ public class ArrayBufferFactory
 		int bufferId = glGenBuffers();
 
 		ArrayBuffer array = new ArrayBuffer(bufferId,
-				data.length / elementSize);
+				data.length / elementSize, elementSize);
 		array.bind();
 		glBufferData(GL_ARRAY_BUFFER, wrap(data), GL_STATIC_DRAW);
 		array.unbind();

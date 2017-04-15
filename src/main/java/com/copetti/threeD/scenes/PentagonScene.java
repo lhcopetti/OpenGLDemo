@@ -110,6 +110,9 @@ public class PentagonScene implements GameScene
 
 	public void onExit()
 	{
+		glDeleteProgram(shader);
+		glDeleteVertexArrays(vao);
+		glDeleteBuffers(positions);
 	}
 
 	public void update(float deltaTime)
@@ -145,8 +148,6 @@ public class PentagonScene implements GameScene
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
-
-		System.out.println("Draw");
 	}
 
 }

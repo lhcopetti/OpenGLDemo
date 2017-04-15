@@ -1,9 +1,5 @@
 package com.copetti.threeD.scenes;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT; 
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-
 import com.copetti.threeD.game.GameScene;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -75,15 +71,15 @@ public class TriangleScene implements GameScene
 				-.5f, -.5f, //
 				.5f, -.5f };
 
-		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(vertexData.length);
+		FloatBuffer floatBuffer = BufferUtils
+				.createFloatBuffer(vertexData.length);
 		floatBuffer.put(vertexData).flip();
-		
+
 		positions = glGenBuffers();
-		
+
 		glBindBuffer(GL_ARRAY_BUFFER, positions);
 		glBufferData(GL_ARRAY_BUFFER, floatBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
 
 		int vertex = compileShader(GL_VERTEX_SHADER, VERTEX_SHADER);
 		int fragment = compileShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER);
@@ -95,6 +91,11 @@ public class TriangleScene implements GameScene
 
 	public void onExit()
 	{
+		glDeleteBuffers(positions);
+		glDeleteProgram(shader);
+		glDeleteVertexArrays(vao);
+		
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
 	public void update(float deltaTime)
@@ -108,16 +109,15 @@ public class TriangleScene implements GameScene
 
 		glUseProgram(shader);
 		glBindVertexArray(vao);
-		
-		
+
 		int aPosition = glGetAttribLocation(shader, "aPosition");
 		glEnableVertexAttribArray(aPosition);
-		
+
 		glBindBuffer(GL_ARRAY_BUFFER, positions);
 		glVertexAttribPointer(aPosition, 2, GL_FLOAT, false, 0, 0);
-		
+
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		
+
 		glDisableVertexAttribArray(aPosition);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);

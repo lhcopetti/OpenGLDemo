@@ -5,12 +5,9 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
-import java.util.Scanner;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
 
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
@@ -76,18 +73,11 @@ public class PentagonScene implements GameScene
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.0f, 0f, 0.4f, 1.0f);
 
-		shaderProgram.bind();
 		glBindVertexArray(vao);
+		shaderProgram.bind();
 
 		// uWorld
 		shaderProgram.setUniform("uWorld", new Matrix4f().rotateZ(angle));
-		
-		FloatBuffer transform = BufferUtils.createFloatBuffer(16);
-		new Matrix4f().rotateZ(angle).get(transform);
-		int uWorld = glGetUniformLocation(shaderProgram.getShaderId(),
-				"uWorld");
-		glEnableVertexAttribArray(uWorld);
-		glUniformMatrix4fv(uWorld, false, transform);
 
 		// aPosition
 		positions.bind();
@@ -95,9 +85,10 @@ public class PentagonScene implements GameScene
 		positions.draw();
 
 		shaderProgram.clearAttribute("aPosition");
+		shaderProgram.clearUniform("uWorld");
+		shaderProgram.unbind();
 		positions.unbind();
 		glBindVertexArray(0);
-		glUseProgram(0);
 	}
 
 }

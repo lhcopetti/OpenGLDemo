@@ -3,8 +3,6 @@ package com.copetti.threeD.opengl.mesh;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.joml.Matrix4f;
-
 import com.copetti.threeD.opengl.array.ArrayBuffer;
 import com.copetti.threeD.opengl.array.IndexBuffer;
 import com.copetti.threeD.opengl.shader.ShaderProgram;
@@ -34,7 +32,7 @@ public class Mesh
 
 		setAttributes();
 		setUniforms();
-		
+
 		if (null == indexBuffer)
 			attributes.values().iterator().next().draw();
 		else
@@ -61,7 +59,7 @@ public class Mesh
 	{
 		uniforms.entrySet().stream().forEach(entry -> {
 			Uniform uniform = entry.getValue();
-			shaderProgram.setUniform(entry.getKey(), uniform.getUniform());
+			shaderProgram.setUniform(entry.getKey(), uniform);
 		});
 	}
 

@@ -13,8 +13,6 @@ import com.copetti.threeD.opengl.uniform.Uniform;
 import com.copetti.threeD.opengl.vertexarray.VertexArrayObject;
 import com.copetti.threeD.opengl.vertexarray.VertexArrayObjectBuilder;
 
-import lombok.NoArgsConstructor;
-
 
 public class MeshBuilder
 {
@@ -40,7 +38,8 @@ public class MeshBuilder
 
 	public MeshBuilder addVector3fAttribute(String key, float... data)
 	{
-		if (attributes.containsKey(key)) throw new IllegalArgumentException("Duplicated attribute key: " + key);
+		if (attributes.containsKey(key)) throw new IllegalArgumentException(
+				"Duplicated attribute key: " + key);
 
 		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(3, data);
 		attributes.put(key, buffer);
@@ -66,5 +65,14 @@ public class MeshBuilder
 				attributes, uniforms);
 		vertexArray.unbind();
 		return mesh;
+	}
+
+	public MeshBuilder addVector2fAttribute(String key, float[] data)
+	{
+		if (attributes.containsKey(key)) throw new IllegalArgumentException("Duplicated attribute key: " + key);
+		
+		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(2, data);
+		attributes.put(key, buffer);
+		return this;
 	}
 }

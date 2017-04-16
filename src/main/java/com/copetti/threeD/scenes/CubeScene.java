@@ -1,22 +1,16 @@
 package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
 
 import java.util.function.BinaryOperator;
 
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
-import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.input.InputEvent;
-import com.copetti.threeD.opengl.array.ArrayBuffer;
-import com.copetti.threeD.opengl.array.ArrayBufferFactory;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
-import com.copetti.threeD.opengl.shader.ShaderProgram;
-import com.copetti.threeD.opengl.shader.ShaderProgramBuilder;
 
 
 public class CubeScene implements GameScene

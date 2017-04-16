@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
 import com.copetti.threeD.opengl.array.ArrayBuffer;
-import com.copetti.threeD.opengl.uniform.UniformType;
+import com.copetti.threeD.opengl.uniform.Uniform;
 
 import lombok.Getter;
 
@@ -56,13 +56,12 @@ public class ShaderProgram
 		glDisableVertexAttribArray(positionLocation);
 	}
 
-	public void setUniform(String uniformName, Object uniform)
+	public void setUniform(String uniformName, Uniform uniform)
 	{
 		int uniformId = glGetUniformLocation(shaderId, uniformName);
-		UniformType uniType = UniformType.fromObject(uniform);
 
 		glEnableVertexAttribArray(uniformId);
-		uniType.setUniform(uniformId, uniform);
+		uniform.getType().setUniform(uniformId, uniform.getValue());
 	}
 
 	public void clearUniform(String uniformName)

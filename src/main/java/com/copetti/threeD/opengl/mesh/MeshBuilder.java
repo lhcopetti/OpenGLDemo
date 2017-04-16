@@ -1,0 +1,70 @@
+package com.copetti.threeD.opengl.mesh;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.copetti.threeD.classpath.Resource;
+import com.copetti.threeD.opengl.array.ArrayBuffer;
+import com.copetti.threeD.opengl.array.ArrayBufferFactory;
+import com.copetti.threeD.opengl.array.IndexBuffer;
+import com.copetti.threeD.opengl.shader.ShaderProgram;
+import com.copetti.threeD.opengl.shader.ShaderProgramBuilder;
+import com.copetti.threeD.opengl.uniform.Uniform;
+import com.copetti.threeD.opengl.vertexarray.VertexArrayObject;
+import com.copetti.threeD.opengl.vertexarray.VertexArrayObjectBuilder;
+
+import lombok.NoArgsConstructor;
+
+
+public class MeshBuilder
+{
+
+	private VertexArrayObject vertexArray;
+	private ShaderProgram shaderProgram;
+
+	private IndexBuffer indexBuffer;
+
+	private Map<String, ArrayBuffer> attributes = new HashMap<>();
+	private Map<String, Uniform> uniforms = new HashMap<>();
+
+	public static MeshBuilder newBuilder()
+	{
+		return new MeshBuilder();
+	}
+
+	private MeshBuilder()
+	{
+		vertexArray = VertexArrayObjectBuilder.newVertexArrayObject();
+		vertexArray.bind();
+	}
+
+	public MeshBuilder addVector3fAttribute(String key, float... data)
+	{
+		if (attributes.containsKey(key)) throw new IllegalArgumentException("Duplicated attribute key: " + key);
+
+		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(3, data);
+		attributes.put(key, buffer);
+		return this;
+	}
+
+	public MeshBuilder loadShaderFromResource(String pathWithoutExtension)
+	{
+		final String vertexShaderPath = pathWithoutExtension + ".vert";
+		final String fragShaderPath = pathWithoutExtension + ".frag";
+
+		shaderProgram = ShaderProgramBuilder //
+				.newBuilder() //
+				.attachVertexShader(Resource.readAllText(vertexShaderPath)) //
+				.attachFragmentShader(Resource.readAllText(fragShaderPath)) //
+				.build();
+		return this;
+	}
+
+	public Mesh build()
+	{
+		Mesh mesh = new Mesh(vertexArray, shaderProgram, indexBuffer,
+				attributes, uniforms);
+		vertexArray.unbind();
+		return mesh;
+	}
+}

@@ -38,12 +38,27 @@ public class MeshBuilder
 
 	public MeshBuilder addVector3fAttribute(String key, float... data)
 	{
-		if (attributes.containsKey(key)) throw new IllegalArgumentException(
-				"Duplicated attribute key: " + key);
-
-		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(3, data);
-		attributes.put(key, buffer);
+		insertIntoAttributesArray(key, 3, data);
 		return this;
+	}
+
+	public MeshBuilder addVector2fAttribute(String key, float[] data)
+	{
+		insertIntoAttributesArray(key, 2, data);
+		return this;
+	}
+
+	private ArrayBuffer insertIntoAttributesArray(String attributeKey,
+			int elementsSize, float[] data)
+	{
+		if (attributes.containsKey(attributeKey))
+			throw new IllegalArgumentException(
+					"Duplicated attribute key: " + attributeKey);
+
+		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(elementsSize,
+				data);
+		attributes.put(attributeKey, buffer);
+		return buffer;
 	}
 
 	public MeshBuilder loadShaderFromResource(String pathWithoutExtension)
@@ -67,12 +82,4 @@ public class MeshBuilder
 		return mesh;
 	}
 
-	public MeshBuilder addVector2fAttribute(String key, float[] data)
-	{
-		if (attributes.containsKey(key)) throw new IllegalArgumentException("Duplicated attribute key: " + key);
-		
-		ArrayBuffer buffer = ArrayBufferFactory.newArrayBuffer(2, data);
-		attributes.put(key, buffer);
-		return this;
-	}
 }

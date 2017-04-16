@@ -76,8 +76,13 @@ public class MeshBuilder
 
 	public Mesh build()
 	{
-		Mesh mesh = new Mesh(vertexArray, shaderProgram, indexBuffer,
-				attributes, uniforms);
+		Mesh mesh;
+		if (null == indexBuffer)
+			mesh = new Mesh(vertexArray, shaderProgram, attributes, uniforms);
+		else
+			mesh = new IndexedMesh(vertexArray, shaderProgram, attributes,
+					uniforms, indexBuffer);
+
 		vertexArray.unbind();
 		return mesh;
 	}

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.copetti.threeD.opengl.array.ArrayBuffer;
-import com.copetti.threeD.opengl.array.IndexBuffer;
 import com.copetti.threeD.opengl.shader.ShaderProgram;
 import com.copetti.threeD.opengl.uniform.Uniform;
 import com.copetti.threeD.opengl.vertexarray.VertexArrayObject;
@@ -20,8 +19,6 @@ public class Mesh
 	private VertexArrayObject vao;
 	private ShaderProgram shaderProgram;
 
-	private IndexBuffer indexBuffer;
-
 	private Map<String, ArrayBuffer> attributes = new HashMap<>();
 	private Map<String, Uniform> uniforms = new HashMap<>();
 
@@ -33,16 +30,18 @@ public class Mesh
 		setAttributes();
 		setUniforms();
 
-		if (null == indexBuffer)
-			attributes.values().iterator().next().draw();
-		else
-			indexBuffer.draw();
+		drawBuffer();
 
 		clearUniforms();
 		clearAttributes();
 
 		shaderProgram.unbind();
 		vao.unbind();
+	}
+
+	protected void drawBuffer()
+	{
+		attributes.values().iterator().next().draw();
 	}
 
 	private void setAttributes()

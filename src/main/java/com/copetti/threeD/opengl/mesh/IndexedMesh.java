@@ -19,6 +19,7 @@ public class IndexedMesh extends Mesh
 			IndexBuffer indexBuffer)
 	{
 		super(vao, shaderProgram, attributes, uniforms);
+		this.indexBuffer = indexBuffer;
 	}
 
 	public void setIndexBuffer(IndexBuffer buffer)

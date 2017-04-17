@@ -87,4 +87,10 @@ public class MeshBuilder
 		return mesh;
 	}
 
+	public MeshBuilder setIndexBuffer(int[] indexes)
+	{
+		this.indexBuffer = ArrayBufferFactory.newIndexBuffer(indexes);
+		return this;
+	}
+
 }

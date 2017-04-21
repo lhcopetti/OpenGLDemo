@@ -12,4 +12,4 @@ void main()
 {
 	gl_Position = vec4(aPosition, 1.0) * uWorld;
 	vColor = vec4(aColor, 1.0);
-};
+}

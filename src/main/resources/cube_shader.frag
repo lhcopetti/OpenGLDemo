@@ -7,4 +7,4 @@ in vec4 vColor;
 void main() 
 {
 	out_color = vColor;
-};
+}

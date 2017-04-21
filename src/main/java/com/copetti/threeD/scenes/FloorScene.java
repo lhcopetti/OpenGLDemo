@@ -14,8 +14,8 @@ import com.copetti.threeD.opengl.mesh.MeshBuilder;
 public class FloorScene implements GameScene
 {
 
-	private static final int NUM_VERTICES_WIDTH = 10;
-	private static final int NUM_VERTICES_HEIGHT = 8;
+	private static final int NUM_VERTICES_WIDTH = 2;
+	private static final int NUM_VERTICES_HEIGHT = 2;
 	private static final float DISTANCE = .15f;
 
 	private Mesh mesh;

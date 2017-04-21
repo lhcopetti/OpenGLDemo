@@ -14,10 +14,8 @@ import com.copetti.threeD.math.Matrix2D3f;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
-
-public class SphereScene implements GameScene
+public class SphereSceneCorrect implements GameScene
 {
-
 	enum Rotation
 	{
 		ROTATION_INCREMENT((x, y) -> {
@@ -90,8 +88,8 @@ public class SphereScene implements GameScene
 		}
 	}
 
-	private static final int NUM_AZIMUTH_DIVISIONS = 20;
-	private static final int NUM_POLAR_DIVISIONS = 20;
+	private static final int NUM_AZIMUTH_DIVISIONS = 5;
+	private static final int NUM_POLAR_DIVISIONS = 5;
 
 	private Mesh mesh;
 
@@ -101,13 +99,11 @@ public class SphereScene implements GameScene
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		float[] squares = Matrix2D3f.newSphericalGrid(0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS)
-				.flatten();
-		int[] indexes = IndexUtils.connectAsGrid(NUM_AZIMUTH_DIVISIONS,
-				NUM_POLAR_DIVISIONS);
+		Matrix2D3f matrix = Matrix2D3f.newSphericalGridCorrect(0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+		int[] indexes = IndexUtils.connectAsGrid(matrix);
 
 		mesh = MeshBuilder.newBuilder() //
-				.addVector3fAttribute("aPosition", squares) //
+				.addVector3fAttribute("aPosition", matrix.flatten()) //
 				.setIndexBuffer(indexes) //
 				.loadShaderFromResource("spherical_shader") //
 				.build();
@@ -134,7 +130,7 @@ public class SphereScene implements GameScene
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f, 0f, 0.4f, 1.0f);
+		glClearColor(0.0f, 0.4f, 0.4f, 1.0f);
 
 		mesh.setUniform("uWorld",
 				new Matrix4f().rotateX(xAngle).rotateY(yAngle));

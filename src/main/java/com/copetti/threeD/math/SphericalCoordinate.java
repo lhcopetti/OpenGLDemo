@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class PolarCoordinate
+public class SphericalCoordinate
 {
 	private @Getter float radius;
-	private @Getter Angle angle;
+	private @Getter Angle polarAngle;
+	private @Getter Angle azimuthAngle;
 }

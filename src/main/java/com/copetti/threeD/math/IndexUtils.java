@@ -7,6 +7,11 @@ import java.util.List;
 public class IndexUtils
 {
 
+	public static int[] connectAsGrid(Matrix2D3f matrix)
+	{
+		return connectAsGrid(matrix.width(), matrix.height());
+	}
+	
 	public static int[] connectAsGrid(int width, int height)
 	{
 		List<Integer> indexes = new ArrayList<>();
@@ -15,8 +20,8 @@ public class IndexUtils
 			for( int j = 0; j < width - 1; j++ )
 			{
 				indexes.add(ijToArrayIndex(width, i, j));
-				indexes.add(ijToArrayIndex(width, i, j + 1)); // Right
 				indexes.add(ijToArrayIndex(width, i + 1, j)); // Down
+				indexes.add(ijToArrayIndex(width, i, j + 1)); // Right
 
 				indexes.add(ijToArrayIndex(width, i, j + 1)); // Right
 				indexes.add(ijToArrayIndex(width, i + 1, j)); // Down

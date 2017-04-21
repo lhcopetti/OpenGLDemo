@@ -65,6 +65,7 @@ public class Matrix2D3f
 	public static Matrix2D3f newSphericalGrid(float radius, int azimuthDivisions, int polarDivisions)
 	{
 		Matrix2D3f m = new Matrix2D3f(polarDivisions, azimuthDivisions);
+		
 		float azimuthStep = 360 / azimuthDivisions;
 		float polarStep = 360 / polarDivisions;
 
@@ -74,7 +75,7 @@ public class Matrix2D3f
 			{
 				Matrix3f azimuthMatrix = new Matrix3f()
 						.rotateY((float) Math.toRadians(i * azimuthStep));
-				PolarCoordinate p = new PolarCoordinate(radius, j * polarStep);
+				PolarCoordinate p = new PolarCoordinate(radius, Angle.fromDegree(j * polarStep));
 				Vector2f cartesian = CoordinateSystem.toCartesian(p);
 				Vector3f v = new Vector3f(cartesian, 0.f);
 				v = azimuthMatrix.transform(v);
@@ -101,5 +102,31 @@ public class Matrix2D3f
 				t.apply(grid[i][j]);
 
 		return this;
+	}
+
+	public static Matrix2D3f newSphericalGridCorrect(float radius,
+			int azimuthDivisions, int polarDivisions)
+	{
+		int numAzimuth = 45;
+		int numPolar = 45;
+		
+		
+		Matrix2D3f m = new Matrix2D3f(numAzimuth + 1, numPolar + 1);
+		
+		float azimuthStep = 360 / numAzimuth;
+		float polarStep = 180 / numPolar;
+
+		for( int i = 0; i < m.height(); i++ )
+		{
+			for( int j = 0; j < m.width(); j++ )
+			{
+				float polarAngle = i * polarStep + 90;
+				float azimuthAngle = j * azimuthStep;
+				SphericalCoordinate sphericalCoord = new SphericalCoordinate(radius, Angle.fromDegree(polarAngle), Angle.fromDegree(azimuthAngle));
+				m.set(i, j, CoordinateSystem.toCartesian(sphericalCoord));
+			}
+		}
+
+		return m;
 	}
 }

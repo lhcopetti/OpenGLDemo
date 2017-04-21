@@ -55,7 +55,7 @@ public class Matrix2D
 
 		for( int i = 0; i < height; i++ )
 			for( int j = 0; j < width; j++ )
-				m.set(i, j, new Vector2f(distance * j, distance * i));
+				m.set(i, j, new Vector2f(distance * j, -distance * i));
 		return m;
 	}
 

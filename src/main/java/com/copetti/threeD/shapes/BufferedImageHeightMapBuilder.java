@@ -14,7 +14,7 @@ public class BufferedImageHeightMapBuilder
 	{
 		return Grid2DCompliantBuilder.build(new Grid2DCompliant<Vector3f>()
 		{
-			private final int STEP = 32;
+			private final int STEP = 16;
 			
 			@Override
 			public int width()

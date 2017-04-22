@@ -53,13 +53,45 @@ public class Grid2DTest
 		Assert.assertEquals(grid, grid2);
 	}
 
-	// @Test
-	// public void testFlattenSquaredGridVector2f()
-	// {
-	// float[] flattened = new float[]
-	// { 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f };
-	//
-	// Assert.assertArrayEquals(flattened, square2Grid.flatten(), 0.001f);
-	// }
+	@Test
+	public void testGridBuildFromArray()
+	{
+		Grid2D<Integer> g = Grid2D.fromArray(new Integer[]
+		{ 5 });
+		Assert.assertEquals((int) g.get(0, 0), 5);
+		Assert.assertEquals(1, g.width());
+		Assert.assertEquals(1, g.height());
+	}
+
+	@Test
+	public void testGridBuildSquaredArray()
+	{
+		Grid2D<Integer> g = Grid2D.fromArray(new Integer[]
+		{ 5, 7, 9, 11 });
+		Assert.assertEquals((int) g.get(0, 0), 5);
+		Assert.assertEquals((int) g.get(0, 1), 7);
+		Assert.assertEquals((int) g.get(1, 0), 9);
+		Assert.assertEquals((int) g.get(1, 1), 11);
+	}
+
+	@Test
+	public void testGridBuildNotSquaredArray()
+	{
+		Grid2D<Integer> g = Grid2D.fromArray(new Integer[]
+		{ 5, 7, 9, 11, 15, 21 }, 3);
+		Assert.assertEquals((int) g.get(0, 0), 5);
+		Assert.assertEquals((int) g.get(0, 1), 7);
+		Assert.assertEquals((int) g.get(0, 2), 9);
+		Assert.assertEquals((int) g.get(1, 0), 11);
+		Assert.assertEquals((int) g.get(1, 1), 15);
+		Assert.assertEquals((int) g.get(1, 2), 21);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGridBuildNotSquaredArrayException()
+	{
+		Grid2D.fromArray(new Integer[]
+		{ 5, 7, 9, 11, 15, 21 });
+	}
 
 }

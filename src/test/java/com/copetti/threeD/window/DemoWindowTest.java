@@ -9,8 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.copetti.threeD.math.CPPoint;
 import com.copetti.threeD.math.CPSize;
 
-import junit.framework.Assert;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class DemoWindowTest
@@ -52,14 +50,4 @@ public class DemoWindowTest
 		Mockito.verify(windowManager).processEvents();
 		Mockito.verify(windowManager).display();
 	}
-
-	@Test
-	public void testClosedWindow()
-	{
-		Mockito.when(windowManager.shouldClose()).thenReturn(true);
-		demo.update();
-		Mockito.verify(windowManager).deinit();
-		Assert.assertTrue(demo.shouldClose());
-	}
-
 }

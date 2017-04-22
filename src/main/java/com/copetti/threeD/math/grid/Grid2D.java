@@ -2,11 +2,13 @@ package com.copetti.threeD.math.grid;
 
 import java.util.Iterator;
 
+import com.copetti.threeD.shapes.Grid2DCompliant;
+
 import lombok.EqualsAndHashCode;
 
 
 @EqualsAndHashCode
-public class Grid2D<T> implements Iterable<T>
+public class Grid2D<T> implements Iterable<T>, Grid2DCompliant<T>
 {
 
 	Object[][] grid;
@@ -50,5 +52,28 @@ public class Grid2D<T> implements Iterable<T>
 		for( T v : this )
 			str.append(v.toString() + " | ");
 		return str.toString();
+	}
+
+	public static <T> Grid2D<T> fromArray(T[] arr)
+	{
+		int size = (int) Math.sqrt(arr.length);
+		if (size * size != arr.length)
+			throw new IllegalArgumentException("This array will not generate a squared matrix");
+		
+		return fromArray(arr, size, size);
+	}
+
+	public static <T> Grid2D<T> fromArray(T[] arr, int width)
+	{
+		return fromArray(arr, width, arr.length / width);
+	}
+
+	private static <T> Grid2D<T> fromArray(T[] arr, int w, int h)
+	{
+		Grid2D<T> g = new Grid2D<>(w, h);
+		for( int i = 0; i < h; i++ )
+			for( int j = 0; j < w; j++ )
+				g.set(i, j, arr[w * i + j]);
+		return g;
 	}
 }

@@ -14,23 +14,24 @@ public class BufferedImageHeightMapBuilder
 	{
 		return Grid2DCompliantBuilder.build(new Grid2DCompliant<Vector3f>()
 		{
-
+			private final int STEP = 32;
+			
 			@Override
 			public int width()
 			{
-				return image.getWidth();
+				return image.getWidth() / STEP;
 			}
 
 			@Override
 			public int height()
 			{
-				return image.getHeight();
+				return image.getHeight() / STEP;
 			}
 
 			@Override
 			public Vector3f get(int i, int j)
 			{
-				return new Vector3f(i, image.getRGB(j, i) & 0xFF, j);
+				return new Vector3f(i, image.getRGB(j * STEP, i * STEP) & 0xFF, j);
 			}
 		});
 	}

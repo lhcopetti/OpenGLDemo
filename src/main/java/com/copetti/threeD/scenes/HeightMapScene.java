@@ -16,6 +16,7 @@ import org.lwjgl.glfw.GLFW;
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.input.InputEvent;
+import com.copetti.threeD.math.CenterSupport;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector3fGridFlattener;
@@ -27,6 +28,7 @@ import com.copetti.threeD.shapes.BufferedImageHeightMapBuilder;
 
 public class HeightMapScene implements GameScene
 {
+
 	enum Rotation
 	{
 		ROTATION_INCREMENT((x, y) -> {
@@ -109,7 +111,7 @@ public class HeightMapScene implements GameScene
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		String montanhaImage = "mini_mountain.jpg";
+		String montanhaImage = "montanha.jpg";
 		try
 		{
 			image = Resource.loadBufferedImage(montanhaImage);
@@ -128,21 +130,21 @@ public class HeightMapScene implements GameScene
 				false);
 
 		float distanceX = heightMap.width() - 1;
-		float distanceY = (float) stream.mapToDouble(vector -> vector.y).max()
-				.getAsDouble();
+		float distanceY = (float) stream
+				.mapToDouble(vector -> Math.abs(vector.y)).max().getAsDouble();
 		float distanceZ = heightMap.height() - 1;
-		
-		for (Vector3f v : heightMap)
-		{
-			v.add(new Vector3f(-distanceX / 2.f, 0.f, -distanceZ / 2.f));
-		}
+
+		// for( Vector3f v : heightMap )
+		// {
+		// v.add(new Vector3f(-distanceX / 2.f, 0.f, -distanceZ / 2.f));
+		// }
+		CenterSupport.centerVector3f(heightMap);
 
 		for( Vector3f v : heightMap )
 		{
-			float x = v.x / distanceX;
-			float y = v.y / distanceY;
-			float z = v.z / distanceZ;
-//			v.set(x, 0.f, z);
+			float x = v.x * (1 + .8f) / distanceZ;
+			float y = v.y * (1 + .4f) / distanceY;
+			float z = v.z * (1 + .8f) / distanceX;
 			v.set(x, y, z);
 		}
 		// v.mul(0.005f);
@@ -176,7 +178,7 @@ public class HeightMapScene implements GameScene
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.4f, 0.4f, 1.0f);
-		
+
 		mesh.setUniform("uWorld",
 				new Matrix4f().rotateX(xAngle).rotateY(yAngle));
 		mesh.draw();

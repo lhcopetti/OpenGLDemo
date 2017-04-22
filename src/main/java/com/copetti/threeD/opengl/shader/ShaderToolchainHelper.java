@@ -14,8 +14,10 @@ public class ShaderToolchainHelper
 		glCompileShader(shaderId);
 
 		if (glGetShaderi(shaderId,
-				GL_COMPILE_STATUS) == GL_FALSE) { throw new RuntimeException(
-						"Failed to compile Shader!"); }
+				GL_COMPILE_STATUS) == GL_FALSE) 
+		{ 
+			throw new RuntimeException("Failed to compile Shader: " + glGetShaderInfoLog(shaderId)); 
+		}
 
 		return shaderId;
 	}

@@ -6,34 +6,31 @@ import org.joml.Vector2f;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.IndexUtils;
-import com.copetti.threeD.math.Matrix2D;
+import com.copetti.threeD.math.grid.Grid2D;
+import com.copetti.threeD.math.grid.Vector2fGridFlattener;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
+import com.copetti.threeD.shapes.RectangleMeshVertices;
 
 
 public class FloorScene implements GameScene
 {
 
-	private static final int NUM_VERTICES_WIDTH = 2;
+	private static final int NUM_VERTICES_WIDTH = 8;
 	private static final int NUM_VERTICES_HEIGHT = 2;
-	private static final float DISTANCE = .15f;
 
 	private Mesh mesh;
 
 	@Override
 	public void onEnter()
 	{
-		Vector2f center = new Vector2f(NUM_VERTICES_WIDTH, NUM_VERTICES_HEIGHT)
-				.mul(0.5f).mul(DISTANCE);
+		Grid2D<Vector2f> grid = RectangleMeshVertices
+				.newGrid(NUM_VERTICES_WIDTH, NUM_VERTICES_HEIGHT);
 
-		float[] squares = Matrix2D
-				.newGridWithSideSize(DISTANCE, NUM_VERTICES_WIDTH,
-						NUM_VERTICES_HEIGHT) //
-				.transform((t) -> {
-					t.sub(center);
-					return null;
-				}) //
-				.flatten();
+		for( Vector2f v : grid )
+			v.mul(0.25f);
+
+		float[] squares = new Vector2fGridFlattener().flatten(grid);
 		int[] indexes = IndexUtils.connectAsGrid(NUM_VERTICES_WIDTH,
 				NUM_VERTICES_HEIGHT);
 

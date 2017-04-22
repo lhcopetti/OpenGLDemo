@@ -48,40 +48,6 @@ public class Matrix2D
 		return floats;
 	}
 
-	public static Matrix2D newGridWithSideSize(float distance, int width,
-			int height)
-	{
-		Matrix2D m = new Matrix2D(width, height);
-
-		for( int i = 0; i < height; i++ )
-			for( int j = 0; j < width; j++ )
-				m.set(i, j, new Vector2f(distance * j, -distance * i));
-		return m;
-	}
-
-	public static Matrix2D newSphericalGrid(float radius, int angleDivisions)
-	{
-		Matrix2D m = new Matrix2D(angleDivisions, angleDivisions);
-		float angle = 360 / angleDivisions;
-
-		for( int i = 0; i < angleDivisions; i++ )
-			for( int j = 0; j < angleDivisions; j++ )
-			{
-//				m.set(i, j, Cnew PolarCoordinate(radius, angle));
-			}
-
-		return m;
-	}
-
-	public Matrix2D fill(Vector2f vector2f)
-	{
-		Vector2f copy = new Vector2f(vector2f.x, vector2f.y);
-		for( int i = 0; i < height(); i++ )
-			for( int j = 0; j < width(); j++ )
-				grid[i][j] = copy;
-		return this;
-	}
-
 	public Matrix2D transform(Function<Vector2f, Void> t)
 	{
 		for( int i = 0; i < height(); i++ )

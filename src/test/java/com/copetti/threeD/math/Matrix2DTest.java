@@ -50,37 +50,4 @@ public class Matrix2DTest
 		assertEquals(v, matrix.get(0, 0));
 	}
 
-	@Test
-	public void testMatrixFlattenWithOneElement()
-	{
-		float[] flattened = oneMatrixElement.flatten();
-		assertArrayEquals(new float[]
-		{ 1.0f, 2.0f }, flattened, 0.001f);
-	}
-
-	@Test
-	public void testFlattenWithMatrixNotSquare()
-	{
-		Matrix2D matrix2d = new Matrix2D(3, 2).fill(new Vector2f(0, 0));
-		assertArrayEquals(new float[]
-		{ 0.f, 0.f, .0f, .0f, .0f, .0f, 0.f, 0.f, .0f, .0f, .0f, .0f }, matrix2d.flatten(), 0.001f);
-	}
-
-	@Test
-	public void testMatrixFlattenWithFourElements()
-	{
-		float[] flattened = fourElements.flatten();
-		float[] expectedFlattened = new float[]
-		{ 1.0f, 2.f, 3f, 4f, 5f, 6f, 7f, 8f };
-		assertArrayEquals(expectedFlattened, flattened, 0.001f);
-	}
-
-	public void testMatrixWithDistance()
-	{
-		Matrix2D grid = Matrix2D.newGridWithSideSize(0.25f, 2, 2);
-		assertArrayEquals(new float[]
-		{ 0.f, 0.f, .25f, 0.f, 0.f, -.25f, .25f, -.25f }, grid.flatten(),
-				0.001f);
-	}
-
 }

@@ -1,8 +1,7 @@
 package com.copetti.threeD.math;
 
-import java.util.Vector;
-
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,6 +50,15 @@ public class CenterSupportTest
 		{ new Vector2f(5.f, -15.f) });
 		Assert.assertEquals(new Vector2f(0.f, 0.f),
 				CenterSupport.center(grid).get(0, 0));
+	}
+
+	@Test
+	public void testCenterOneElement3D()
+	{
+		Grid2D<Vector3f> grid = Grid2D.fromArray(new Vector3f[]
+		{ new Vector3f(5.f, -15.f, 3.f) });
+		Assert.assertEquals(new Vector3f(0.f, 0.f, 0.f),
+				CenterSupport.centerVector3f(grid).get(0, 0));
 	}
 
 	@Test

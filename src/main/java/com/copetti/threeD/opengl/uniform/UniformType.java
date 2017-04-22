@@ -41,6 +41,14 @@ public enum UniformType
 			glUniformMatrix3fv(id, false, buffer);
 		}
 
+	},
+	OneFloat(Float.class)
+	{
+		public void setUniform(int id, Object value)
+		{
+			float f = (float) value;
+			glUniform1f(id, f);
+		}
 	};
 
 	private @Getter Class<?> glClass;

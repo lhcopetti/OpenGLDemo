@@ -5,14 +5,17 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.function.BinaryOperator;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.IndexUtils;
-import com.copetti.threeD.math.Matrix2D3f;
+import com.copetti.threeD.math.grid.Grid2D;
+import com.copetti.threeD.math.grid.Vector3fGridFlattener;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
+import com.copetti.threeD.shapes.SphericalMeshVertices;
 
 
 public class SphereScene implements GameScene
@@ -90,8 +93,8 @@ public class SphereScene implements GameScene
 		}
 	}
 
-	private static final int NUM_AZIMUTH_DIVISIONS = 20;
-	private static final int NUM_POLAR_DIVISIONS = 20;
+	private static final int NUM_AZIMUTH_DIVISIONS = 15;
+	private static final int NUM_POLAR_DIVISIONS = 15;
 
 	private Mesh mesh;
 
@@ -101,17 +104,20 @@ public class SphereScene implements GameScene
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		float[] squares = Matrix2D3f.newSphericalGrid(0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS)
-				.flatten();
-		int[] indexes = IndexUtils.connectAsGrid(NUM_AZIMUTH_DIVISIONS,
-				NUM_POLAR_DIVISIONS);
+		Grid2D<Vector3f> grid = SphericalMeshVertices
+				.newSphericalGrid(NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+
+		for( Vector3f v : grid )
+			v.mul(0.8f);
+
+		int[] indexes = IndexUtils.connectAsGrid(grid);
 
 		mesh = MeshBuilder.newBuilder() //
-				.addVector3fAttribute("aPosition", squares) //
+				.addVector3fAttribute("aPosition",
+						new Vector3fGridFlattener().flatten(grid)) //
 				.setIndexBuffer(indexes) //
 				.loadShaderFromResource("spherical_shader") //
 				.build();
-		// mesh.setUniform("aTranslation", new Matrix3f().trans);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
@@ -134,7 +140,7 @@ public class SphereScene implements GameScene
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f, 0f, 0.4f, 1.0f);
+		glClearColor(0.0f, 0.4f, 0.4f, 1.0f);
 
 		mesh.setUniform("uWorld",
 				new Matrix4f().rotateX(xAngle).rotateY(yAngle));

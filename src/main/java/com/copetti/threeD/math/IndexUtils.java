@@ -3,11 +3,15 @@ package com.copetti.threeD.math;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Vector3f;
+
+import com.copetti.threeD.math.grid.Grid2D;
+
 
 public class IndexUtils
 {
 
-	public static int[] connectAsGrid(Matrix2D3f matrix)
+	public static int[] connectAsGrid(Grid2D<Vector3f> matrix)
 	{
 		return connectAsGrid(matrix.width(), matrix.height());
 	}

@@ -5,17 +5,22 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.function.BinaryOperator;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.IndexUtils;
-import com.copetti.threeD.math.Matrix2D3f;
+import com.copetti.threeD.math.grid.Grid2D;
+import com.copetti.threeD.math.grid.Vector3fGridFlattener;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
+import com.copetti.threeD.shapes.SphericalMeshVertices;
+
 
 public class SphereSceneCorrect implements GameScene
 {
+
 	enum Rotation
 	{
 		ROTATION_INCREMENT((x, y) -> {
@@ -99,11 +104,13 @@ public class SphereSceneCorrect implements GameScene
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		Matrix2D3f matrix = Matrix2D3f.newSphericalGridCorrect(0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
-		int[] indexes = IndexUtils.connectAsGrid(matrix);
+		Grid2D<Vector3f> grid = SphericalMeshVertices.newSphericalGridCorrect(
+				0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+		int[] indexes = IndexUtils.connectAsGrid(grid);
 
 		mesh = MeshBuilder.newBuilder() //
-				.addVector3fAttribute("aPosition", matrix.flatten()) //
+				.addVector3fAttribute("aPosition",
+						new Vector3fGridFlattener().flatten(grid)) //
 				.setIndexBuffer(indexes) //
 				.loadShaderFromResource("spherical_shader") //
 				.build();

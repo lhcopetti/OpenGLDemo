@@ -11,7 +11,7 @@ import com.copetti.threeD.math.grid.Grid2D;
 public class SphericalMeshVertices
 {
 
-	public static Grid2D<Vector3f> newSphericalGridCorrect(float radius,
+	public static Grid2D<Vector3f> newSphericalGrid(float radius,
 			int azimuthDivisions, int polarDivisions)
 	{
 		int numAzimuth = 45;

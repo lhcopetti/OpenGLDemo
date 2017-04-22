@@ -18,7 +18,7 @@ import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.SphericalMeshVertices;
 
 
-public class SphereSceneCorrect implements GameScene
+public class SphereScene implements GameScene
 {
 
 	enum Rotation
@@ -104,8 +104,8 @@ public class SphereSceneCorrect implements GameScene
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		Grid2D<Vector3f> grid = SphericalMeshVertices.newSphericalGridCorrect(
-				0.8f, NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+		Grid2D<Vector3f> grid = SphericalMeshVertices.newSphericalGrid(0.8f,
+				NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
 		int[] indexes = IndexUtils.connectAsGrid(grid);
 
 		mesh = MeshBuilder.newBuilder() //
@@ -114,7 +114,6 @@ public class SphereSceneCorrect implements GameScene
 				.setIndexBuffer(indexes) //
 				.loadShaderFromResource("spherical_shader") //
 				.build();
-		// mesh.setUniform("aTranslation", new Matrix3f().trans);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 

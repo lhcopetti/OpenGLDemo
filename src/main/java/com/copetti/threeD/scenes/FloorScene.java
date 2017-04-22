@@ -16,8 +16,9 @@ import com.copetti.threeD.shapes.RectangleMeshVertices;
 public class FloorScene implements GameScene
 {
 
-	private static final int NUM_VERTICES_WIDTH = 8;
-	private static final int NUM_VERTICES_HEIGHT = 2;
+	private static final int NUM_VERTICES_WIDTH = 20;
+	private static final int NUM_VERTICES_HEIGHT = 20;
+	private static final float WINDOW_FILL_PROPOTION = .8f;
 
 	private Mesh mesh;
 
@@ -27,8 +28,12 @@ public class FloorScene implements GameScene
 		Grid2D<Vector2f> grid = RectangleMeshVertices
 				.newGrid(NUM_VERTICES_WIDTH, NUM_VERTICES_HEIGHT);
 
+		float widthDistance = grid.width() - 1;
+		float heightDistance = grid.height() - 1;
+
 		for( Vector2f v : grid )
-			v.mul(0.25f);
+			v.set(v.x * (1 + WINDOW_FILL_PROPOTION) / widthDistance,
+					v.y * (1 + WINDOW_FILL_PROPOTION) / heightDistance);
 
 		float[] squares = new Vector2fGridFlattener().flatten(grid);
 		int[] indexes = IndexUtils.connectAsGrid(NUM_VERTICES_WIDTH,

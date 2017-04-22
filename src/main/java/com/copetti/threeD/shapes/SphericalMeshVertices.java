@@ -11,16 +11,14 @@ import com.copetti.threeD.math.grid.Grid2D;
 public class SphericalMeshVertices
 {
 
-	public static Grid2D<Vector3f> newSphericalGrid(float radius,
-			int azimuthDivisions, int polarDivisions)
+	public static Grid2D<Vector3f> newSphericalGrid(int azimuthDivisions,
+			int polarDivisions)
 	{
-		int numAzimuth = 45;
-		int numPolar = 45;
+		Grid2D<Vector3f> m = new Grid2D<>(azimuthDivisions + 1,
+				polarDivisions + 1);
 
-		Grid2D<Vector3f> m = new Grid2D<>(numAzimuth + 1, numPolar + 1);
-
-		float azimuthStep = 360 / numAzimuth;
-		float polarStep = 180 / numPolar;
+		float azimuthStep = 360 / azimuthDivisions;
+		float polarStep = 180 / polarDivisions;
 
 		for( int i = 0; i < m.height(); i++ )
 		{
@@ -29,7 +27,7 @@ public class SphericalMeshVertices
 				float polarAngle = i * polarStep + 90;
 				float azimuthAngle = j * azimuthStep;
 				SphericalCoordinate sphericalCoord = new SphericalCoordinate(
-						radius, Angle.fromDegree(polarAngle),
+						1.f, Angle.fromDegree(polarAngle),
 						Angle.fromDegree(azimuthAngle));
 				m.set(i, j, CoordinateSystem.toCartesian(sphericalCoord));
 			}

@@ -93,8 +93,8 @@ public class SphereScene implements GameScene
 		}
 	}
 
-	private static final int NUM_AZIMUTH_DIVISIONS = 5;
-	private static final int NUM_POLAR_DIVISIONS = 5;
+	private static final int NUM_AZIMUTH_DIVISIONS = 15;
+	private static final int NUM_POLAR_DIVISIONS = 15;
 
 	private Mesh mesh;
 
@@ -104,8 +104,12 @@ public class SphereScene implements GameScene
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
-		Grid2D<Vector3f> grid = SphericalMeshVertices.newSphericalGrid(0.8f,
-				NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+		Grid2D<Vector3f> grid = SphericalMeshVertices
+				.newSphericalGrid(NUM_AZIMUTH_DIVISIONS, NUM_POLAR_DIVISIONS);
+
+		for( Vector3f v : grid )
+			v.mul(0.8f);
+
 		int[] indexes = IndexUtils.connectAsGrid(grid);
 
 		mesh = MeshBuilder.newBuilder() //

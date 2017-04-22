@@ -61,8 +61,6 @@ public class TriangleScene implements GameScene
 
 	public void onEnter()
 	{
-		System.out.println("On enter!");
-
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 
@@ -94,7 +92,7 @@ public class TriangleScene implements GameScene
 		glDeleteBuffers(positions);
 		glDeleteProgram(shader);
 		glDeleteVertexArrays(vao);
-		
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
@@ -122,8 +120,6 @@ public class TriangleScene implements GameScene
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
-
-		System.out.println("Draw");
 	}
 
 }

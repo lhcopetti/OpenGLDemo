@@ -65,8 +65,6 @@ public class CyclicSceneSequence implements GameScene
 	@Override
 	public void handleInput(InputEvent input)
 	{
-		System.out.println("Handle input: " + input.getKey());
-
 		if (!shouldPropagate(input)) return;
 
 		currentScene.handleInput(input);
@@ -94,9 +92,6 @@ public class CyclicSceneSequence implements GameScene
 	public void switchScene(int direction)
 	{
 		currentScene.onExit();
-
-		System.out.println("Scenes: " + scenes.size());
-		System.out.println("Current Index: " + currentIndex);
 		int newIndex = currentIndex + direction;
 
 		if (newIndex < 0)

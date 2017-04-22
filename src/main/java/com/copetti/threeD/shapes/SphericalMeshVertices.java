@@ -20,15 +20,15 @@ public class SphericalMeshVertices
 		float azimuthStep = 360 / azimuthDivisions;
 		float polarStep = 180 / polarDivisions;
 
+		float radius = 1.f;
 		for( int i = 0; i < m.height(); i++ )
 		{
+			Angle polar = Angle.fromDegree(i * polarStep + 90.f);
 			for( int j = 0; j < m.width(); j++ )
 			{
-				float polarAngle = i * polarStep + 90;
-				float azimuthAngle = j * azimuthStep;
+				Angle azimuth = Angle.fromDegree(j * azimuthStep);
 				SphericalCoordinate sphericalCoord = new SphericalCoordinate(
-						1.f, Angle.fromDegree(polarAngle),
-						Angle.fromDegree(azimuthAngle));
+						radius, polar, azimuth);
 				m.set(i, j, CoordinateSystem.toCartesian(sphericalCoord));
 			}
 		}

@@ -43,7 +43,7 @@ public class HeightMapScene implements GameScene
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		String montanhaImage = "gray/montanha.jpg";
+		String montanhaImage = "gray/mountains.png";
 		try
 		{
 			image = Resource.loadBufferedImage(montanhaImage);

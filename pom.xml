@@ -18,13 +18,24 @@
 		<joml.version>1.6.7</joml.version>
 	</properties>
 
+
+	<repositories>
+		<repository>
+			<id>com.springsource.repository.bundles.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+
+	</repositories>
 	<dependencies>
+
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -72,6 +83,15 @@
 			<artifactId>reflections-maven</artifactId>
 			<version>0.9.9-RC2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-stb</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+
+
+
 
 	</dependencies>
 </project>

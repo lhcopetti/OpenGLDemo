@@ -6,14 +6,12 @@ import com.copetti.threeD.scenes.CyclicSceneSequence;
 import com.copetti.threeD.window.DemoWindow;
 import com.copetti.threeD.window.GLFWWindowHandler;
 
-
 /**
  * Hello world!
  *
  */
 public class App
 {
-
 	public static void main(String[] args) throws Exception
 	{
 		DemoWindow w = new DemoWindow(new GLFWWindowHandler(),

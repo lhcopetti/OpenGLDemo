@@ -15,6 +15,7 @@ public class GLFWWindowHandler implements WindowManager
 {
 
 	private long windowHandler;
+	private GLFWKeyCallback glfwKeyCallback;
 
 	public void init(int width, int height)
 	{
@@ -80,7 +81,7 @@ public class GLFWWindowHandler implements WindowManager
 	@Override
 	public void setKeyEventHandler(KeyEventHandler keyEventHandler)
 	{
-		glfwSetKeyCallback(windowHandler, new GLFWKeyCallback()
+		glfwKeyCallback = new GLFWKeyCallback()
 		{
 
 			@Override
@@ -89,7 +90,9 @@ public class GLFWWindowHandler implements WindowManager
 			{
 				keyEventHandler.handleKeyEvent(key, scancode, action, mods);
 			}
-		});
+		};
+		
+		glfwSetKeyCallback(windowHandler, glfwKeyCallback);
 	}
 
 }

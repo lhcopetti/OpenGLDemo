@@ -2,17 +2,19 @@ package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.game.KeyboardControlledAngles;
+import com.copetti.threeD.image.ByteBufferImage;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.CenterSupport;
 import com.copetti.threeD.math.IndexUtils;
@@ -20,7 +22,8 @@ import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector3fGridFlattener;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
-import com.copetti.threeD.shapes.BufferedImageHeightMapBuilder;
+import com.copetti.threeD.shapes.BufferImageHeightMapBuilder;
+import com.copetti.threeD.shapes.Grid2DCompliantBuilder;
 
 
 public class HeightMapScene implements GameScene
@@ -28,12 +31,29 @@ public class HeightMapScene implements GameScene
 
 	private Mesh mesh;
 	private KeyboardControlledAngles angleTransform;
-	private BufferedImage image;
+	
+	private String[] images;
+	private int currentImageIndex;
+	private ByteBufferImage currentImage;
+	private int step = 16;
+	
+	public HeightMapScene() {
+		images = new String[] {"gray/mountains.png", "gray/radial.jpg", "gray/scale.png", "gray/volcano.png" };
+	}
 
 	@Override
 	public void handleInput(InputEvent input)
 	{
 		angleTransform.handleInput(input);
+		
+		if (input.getKey() == GLFW.GLFW_KEY_P && input.getAction() == GLFW.GLFW_RELEASE)
+			changeStep(step + 1);
+		if (input.getKey() == GLFW.GLFW_KEY_M && input.getAction() == GLFW.GLFW_RELEASE)
+			changeStep(step -1 <= 0 ? 1 : step - 1);
+		if (input.getKey() == GLFW.GLFW_KEY_COMMA && input.getAction() == GLFW.GLFW_RELEASE)
+			changeImage(currentImageIndex - 1 < 0 ? images.length - 1 : currentImageIndex - 1);
+		if (input.getKey() == GLFW.GLFW_KEY_PERIOD && input.getAction() == GLFW.GLFW_RELEASE)
+			changeImage(currentImageIndex + 1 >= images.length ? 0 : currentImageIndex + 1);
 	}
 
 	@Override
@@ -43,18 +63,55 @@ public class HeightMapScene implements GameScene
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		String montanhaImage = "gray/mountains.png";
-		try
-		{
-			image = Resource.loadBufferedImage(montanhaImage);
+		angleTransform = new KeyboardControlledAngles();
+		setUpHeightMap(currentImageIndex, step);
+	}
+	
+	public void setUpHeightMap(int imageIndex, int step)
+	{
+		currentImage = loadImage(images[imageIndex]);
+		Grid2D<Vector3f> heightMap = loadHeightMap(currentImage, step);
+		mesh = buildNewMesh(heightMap);	
+	}
+	
+	public void changeImage(int newImageIndex)
+	{
+		currentImageIndex = newImageIndex;
+		setUpHeightMap(newImageIndex, step);
+	}
+	
+	private void changeStep(int newStep)
+	{
+		step = newStep;
+		Grid2D<Vector3f> map = loadHeightMap(currentImage, newStep);
+		mesh = buildNewMesh(map);
+	}
+	
+	private Mesh buildNewMesh(Grid2D<Vector3f> map)
+	{
+		return MeshBuilder //
+			.newBuilder() //
+			.addVector3fAttribute("aPosition",
+					new Vector3fGridFlattener().flatten(map)) //
+			.setIndexBuffer(IndexUtils.connectAsGrid(map))
+			.loadShaderFromResource("heightmap_shader").build();
+	}
+	
+	private ByteBufferImage loadImage(String filepath)
+	{
+		File file;
+		try {
+			file = Resource.getFile(filepath);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e.getMessage());
 		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(
-					"Could not load Image: " + montanhaImage);
-		}
-
-		Grid2D<Vector3f> heightMap = BufferedImageHeightMapBuilder.build(image);
+		
+		return ByteBufferImage.createUsingSTB(file);
+	}
+	
+	private Grid2D<Vector3f> loadHeightMap(ByteBufferImage image, int step)
+	{		
+		Grid2D<Vector3f> heightMap = Grid2DCompliantBuilder.build(new BufferImageHeightMapBuilder(image, step));
 
 		Iterator<Vector3f> iter = heightMap.iterator();
 		Iterable<Vector3f> iterable = () -> iter;
@@ -74,16 +131,7 @@ public class HeightMapScene implements GameScene
 			float z = v.z * (1 + .8f) / distanceX;
 			v.set(x, y, z);
 		}
-
-		angleTransform = new KeyboardControlledAngles();
-
-		mesh = MeshBuilder //
-				.newBuilder() //
-				.addVector3fAttribute("aPosition",
-						new Vector3fGridFlattener().flatten(heightMap)) //
-				.setIndexBuffer(IndexUtils.connectAsGrid(heightMap))
-				.loadShaderFromResource("heightmap_shader").build();
-
+		return heightMap;
 	}
 
 	@Override

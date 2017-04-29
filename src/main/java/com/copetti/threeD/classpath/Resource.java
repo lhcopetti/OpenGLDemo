@@ -1,8 +1,10 @@
 package com.copetti.threeD.classpath;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -26,10 +28,15 @@ public final class Resource
 		return ImageIO.read(resourceAsStream(resourcePath));
 	}
 
-	private static InputStream resourceAsStream(String resourcePath)
+	public static InputStream resourceAsStream(String resourcePath)
 	{
 		return Resource.class.getClassLoader()
 				.getResourceAsStream(resourcePath);
+	}
+	
+	public static File getFile(String filePath) throws URISyntaxException
+	{
+		return new File(Resource.class.getClassLoader().getResource(filePath).toURI());
 	}
 
 }

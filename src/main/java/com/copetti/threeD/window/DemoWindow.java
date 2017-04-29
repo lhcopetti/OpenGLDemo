@@ -14,7 +14,9 @@ public class DemoWindow
 	private WindowManager window;
 	private @Getter CPSize size;
 	private boolean isClosed;
-
+	
+	private KeyEventHandler eventHandler;
+	
 	public DemoWindow(WindowManager window, CPSize windowSize)
 	{
 		this.window = window;
@@ -58,9 +60,7 @@ public class DemoWindow
 
 	public void setInputHandler(InputHandler handler)
 	{
-		window.setKeyEventHandler(new KeyEventHandler()
-		{
-
+		eventHandler = new KeyEventHandler() {
 			@Override
 			public void handleKeyEvent(int key, int scancode, int action,
 					int mods)
@@ -68,7 +68,9 @@ public class DemoWindow
 				handler.handleInput(
 						new InputEvent(scancode, mods, action, key));
 			}
-		});
-	}
+		};
+
+		window.setKeyEventHandler(eventHandler);	
+				}
 
 }

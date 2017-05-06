@@ -14,12 +14,12 @@ public class InputEventListenerTest
 
 	InputEventListener pressWListener;
 	InputEvent pressW;
-	InputHandler handler;
+	InputCallback handler;
 
 	@Before
 	public void before()
 	{
-		handler = mock(InputHandler.class);
+		handler = mock(InputCallback.class);
 		pressW = new InputEvent(0, 0, InputAction.PRESS, GLFW.GLFW_KEY_W);
 		pressWListener = new InputEventListener(InputAction.PRESS,
 				GLFW.GLFW_KEY_W, handler);
@@ -30,7 +30,7 @@ public class InputEventListenerTest
 	{
 		assertTrue(pressWListener.fire(
 				new InputEvent(0, 0, InputAction.PRESS, GLFW.GLFW_KEY_W)));
-		verify(handler).handleInput(pressW);
+		verify(handler).handle();
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class InputEventListenerTest
 	{
 		assertFalse(pressWListener.fire(
 				new InputEvent(0, 0, InputAction.PRESSING, GLFW.GLFW_KEY_W)));
-		verify(handler, never()).handleInput(pressW);
+		verify(handler, never()).handle();
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class InputEventListenerTest
 	{
 		assertFalse(pressWListener.fire(
 				new InputEvent(0, 0, InputAction.RELEASE, GLFW.GLFW_KEY_W)));
-		verify(handler, never()).handleInput(pressW);
+		verify(handler, never()).handle();
 	}
 
 	@Test
@@ -54,14 +54,14 @@ public class InputEventListenerTest
 	{
 		assertFalse(pressWListener.fire(
 				new InputEvent(0, 0, InputAction.PRESS, GLFW.GLFW_KEY_V)));
-		verify(handler, never()).handleInput(pressW);
+		verify(handler, never()).handle();
 	}
 
 	@Test
 	public void testHandleInputFireMethodCallsHandler()
 	{
 		pressWListener.fire(pressW);
-		verify(handler).handleInput(pressW);
+		verify(handler).handle();
 	}
 
 }

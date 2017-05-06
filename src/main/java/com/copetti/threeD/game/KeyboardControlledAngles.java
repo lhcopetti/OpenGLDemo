@@ -5,13 +5,14 @@ import java.util.function.BinaryOperator;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
-import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.input.InputHandler;
+import com.copetti.threeD.input.InputManager;
 
 
 public class KeyboardControlledAngles implements InputHandler
 {
+
 	enum Rotation
 	{
 		ROTATION_INCREMENT((x, y) -> {
@@ -41,55 +42,65 @@ public class KeyboardControlledAngles implements InputHandler
 	private float xAngle;
 	private float yAngle;
 
+	private InputManager inputManager;
+
+	public KeyboardControlledAngles()
+	{
+		inputManager = new InputManager();
+		inputManager.addPressingListener(GLFW.GLFW_KEY_A, this::pressedA);
+		inputManager.addPressingListener(GLFW.GLFW_KEY_D, this::pressedD);
+		inputManager.addPressingListener(GLFW.GLFW_KEY_W, this::pressedW);
+		inputManager.addPressingListener(GLFW.GLFW_KEY_S, this::pressedS);
+
+		inputManager.addReleaseListener(GLFW.GLFW_KEY_D, this::releasedAorD);
+		inputManager.addReleaseListener(GLFW.GLFW_KEY_A, this::releasedAorD);
+		inputManager.addReleaseListener(GLFW.GLFW_KEY_W, this::releasedWorS);
+		inputManager.addReleaseListener(GLFW.GLFW_KEY_S, this::releasedWorS);
+	}
+
 	@Override
 	public void handleInput(InputEvent input)
 	{
-		if (input.getAction() == InputAction.RELEASE)
-			handleKeyPress(input);
-		else
-			if (input.getAction() == InputAction.RELEASE) //
-				handleKeyRelease(input);
+		inputManager.handleInput(input);
 	}
 
-	private void handleKeyPress(InputEvent input)
+	private void pressedA()
 	{
-		switch (input.getKey())
-		{
-		case GLFW.GLFW_KEY_A:
-			yRotation = Rotation.ROTATION_INCREMENT;
-			break;
-		case GLFW.GLFW_KEY_D:
-			yRotation = Rotation.ROTATION_DECREMENT;
-			break;
-		case GLFW.GLFW_KEY_W:
-			xRotation = Rotation.ROTATION_INCREMENT;
-			break;
-		case GLFW.GLFW_KEY_S:
-			xRotation = Rotation.ROTATION_DECREMENT;
-			break;
-		}
+		yRotation = Rotation.ROTATION_INCREMENT;
 	}
 
-	private void handleKeyRelease(InputEvent input)
+	private void pressedD()
 	{
-		switch (input.getKey())
-		{
-		case GLFW.GLFW_KEY_A:
-		case GLFW.GLFW_KEY_D:
-			yRotation = Rotation.ROTATION_NONE;
-		case GLFW.GLFW_KEY_W:
-		case GLFW.GLFW_KEY_S:
-			xRotation = Rotation.ROTATION_NONE;
-			break;
-		}
+		yRotation = Rotation.ROTATION_DECREMENT;
 	}
-	
+
+	private void pressedW()
+	{
+		xRotation = Rotation.ROTATION_INCREMENT;
+	}
+
+	private void pressedS()
+	{
+		xRotation = Rotation.ROTATION_DECREMENT;
+	}
+
+	private void releasedAorD()
+	{
+		yRotation = Rotation.ROTATION_NONE;
+	}
+
+	private void releasedWorS()
+	{
+		xRotation = Rotation.ROTATION_NONE;
+	}
+
 	public void update(float deltaTime)
 	{
+		inputManager.pollInputEvents();
 		xAngle = xRotation.transform(xAngle, deltaTime);
 		yAngle = yRotation.transform(yAngle, deltaTime);
 	}
-	
+
 	public Matrix4f getTransformationMatrix()
 	{
 		return new Matrix4f().rotateX(xAngle).rotateY(yAngle);

@@ -17,7 +17,7 @@ public class InputManager implements InputHandler
 		events = new ArrayList<>();
 	}
 
-	public void addListener(InputAction press, int key, InputHandler handler)
+	public void addListener(InputAction press, int key, InputCallback handler)
 	{
 		listeners.add(new InputEventListener(press, key, handler));
 	}
@@ -37,17 +37,17 @@ public class InputManager implements InputHandler
 			events.add(InputEvent.pressing(inputEvent));
 	}
 
-	public void addPressListener(int key, InputHandler handler)
+	public void addPressListener(int key, InputCallback handler)
 	{
 		addListener(InputAction.PRESS, key, handler);
 	}
 
-	public void addReleaseListener(int key, InputHandler mock)
+	public void addReleaseListener(int key, InputCallback mock)
 	{
 		addListener(InputAction.RELEASE, key, mock);
 	}
 
-	public void addPressingListener(int key, InputHandler handler)
+	public void addPressingListener(int key, InputCallback handler)
 	{
 		addListener(InputAction.PRESSING, key, handler);
 	}
@@ -56,8 +56,8 @@ public class InputManager implements InputHandler
 	{
 		listeners.forEach(this::fireEventForListener);
 
-		listeners = listeners.stream() //
-				.filter(x -> x.getExpectsAction() == InputAction.PRESSING) //
+		events = events.stream() //
+				.filter(x -> x.getAction() == InputAction.PRESSING) //
 				.collect(Collectors.toList());
 	}
 

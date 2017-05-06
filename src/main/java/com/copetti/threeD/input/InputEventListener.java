@@ -11,13 +11,13 @@ public class InputEventListener
 	private @Getter InputAction expectsAction;
 	private @Getter int expectsKey;
 
-	private @Getter InputHandler handler;
+	private @Getter InputCallback handler;
 
 	public boolean fire(InputEvent input)
 	{
 		if (!handlesInput(input)) return false;
 
-		handler.handleInput(input);
+		handler.handle();
 		return true;
 	}
 

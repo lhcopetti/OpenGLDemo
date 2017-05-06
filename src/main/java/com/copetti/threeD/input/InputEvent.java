@@ -10,7 +10,7 @@ public class InputEvent
 
 	private @Getter int scanCode;
 	private @Getter int mods;
-	private @Getter int action;
+	private @Getter InputAction action;
 	private @Getter int key;
 
 }

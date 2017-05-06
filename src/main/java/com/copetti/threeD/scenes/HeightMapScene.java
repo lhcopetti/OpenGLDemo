@@ -15,6 +15,7 @@ import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.game.KeyboardControlledAngles;
 import com.copetti.threeD.image.ByteBufferImage;
+import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.CenterSupport;
 import com.copetti.threeD.math.IndexUtils;
@@ -46,13 +47,13 @@ public class HeightMapScene implements GameScene
 	{
 		angleTransform.handleInput(input);
 		
-		if (input.getKey() == GLFW.GLFW_KEY_P && input.getAction() == GLFW.GLFW_RELEASE)
+		if (input.getKey() == GLFW.GLFW_KEY_P && input.getAction() == InputAction.RELEASE)
 			changeStep(step + 1);
-		if (input.getKey() == GLFW.GLFW_KEY_M && input.getAction() == GLFW.GLFW_RELEASE)
+		if (input.getKey() == GLFW.GLFW_KEY_M && input.getAction() == InputAction.RELEASE)
 			changeStep(step -1 <= 0 ? 1 : step - 1);
-		if (input.getKey() == GLFW.GLFW_KEY_COMMA && input.getAction() == GLFW.GLFW_RELEASE)
+		if (input.getKey() == GLFW.GLFW_KEY_COMMA && input.getAction() == InputAction.RELEASE)
 			changeImage(currentImageIndex - 1 < 0 ? images.length - 1 : currentImageIndex - 1);
-		if (input.getKey() == GLFW.GLFW_KEY_PERIOD && input.getAction() == GLFW.GLFW_RELEASE)
+		if (input.getKey() == GLFW.GLFW_KEY_PERIOD && input.getAction() == InputAction.RELEASE)
 			changeImage(currentImageIndex + 1 >= images.length ? 0 : currentImageIndex + 1);
 	}
 

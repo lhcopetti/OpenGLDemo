@@ -5,6 +5,7 @@ import java.util.function.BinaryOperator;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
+import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.input.InputHandler;
 
@@ -43,10 +44,10 @@ public class KeyboardControlledAngles implements InputHandler
 	@Override
 	public void handleInput(InputEvent input)
 	{
-		if (input.getAction() == GLFW.GLFW_PRESS)
+		if (input.getAction() == InputAction.RELEASE)
 			handleKeyPress(input);
 		else
-			if (input.getAction() == GLFW.GLFW_RELEASE) //
+			if (input.getAction() == InputAction.RELEASE) //
 				handleKeyRelease(input);
 	}
 

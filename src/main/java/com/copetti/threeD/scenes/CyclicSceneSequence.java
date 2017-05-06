@@ -9,6 +9,7 @@ import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 
 
@@ -72,7 +73,7 @@ public class CyclicSceneSequence implements GameScene
 
 	private boolean shouldPropagate(InputEvent input)
 	{
-		if (input.getAction() != GLFW.GLFW_RELEASE) return true;
+		if (input.getAction() != InputAction.RELEASE) return true;
 
 		if (input.getKey() == GLFW.GLFW_KEY_LEFT)
 		{

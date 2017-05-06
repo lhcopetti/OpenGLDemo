@@ -1,5 +1,7 @@
 package com.copetti.threeD.window;
 
+import com.copetti.threeD.glfw.KeyInputGLFWMapper;
+import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.input.InputHandler;
 import com.copetti.threeD.math.CPPoint;
@@ -14,9 +16,9 @@ public class DemoWindow
 	private WindowManager window;
 	private @Getter CPSize size;
 	private boolean isClosed;
-	
+
 	private KeyEventHandler eventHandler;
-	
+
 	public DemoWindow(WindowManager window, CPSize windowSize)
 	{
 		this.window = window;
@@ -60,17 +62,20 @@ public class DemoWindow
 
 	public void setInputHandler(InputHandler handler)
 	{
-		eventHandler = new KeyEventHandler() {
+		eventHandler = new KeyEventHandler()
+		{
+
 			@Override
 			public void handleKeyEvent(int key, int scancode, int action,
 					int mods)
 			{
+				InputAction inputAction = KeyInputGLFWMapper.getAction(action);
 				handler.handleInput(
-						new InputEvent(scancode, mods, action, key));
+						new InputEvent(scancode, mods, inputAction, key));
 			}
 		};
 
-		window.setKeyEventHandler(eventHandler);	
-				}
+		window.setKeyEventHandler(eventHandler);
+	}
 
 }

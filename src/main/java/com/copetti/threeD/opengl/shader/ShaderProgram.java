@@ -59,8 +59,6 @@ public class ShaderProgram
 	public void setUniform(String uniformName, Uniform uniform)
 	{
 		int uniformId = getUniform(uniformName);
-		System.out.println("Name: " + uniformName + " UniformID: " + uniformId);
-
 		uniform.getType().setUniform(uniformId, uniform.getValue());
 	}
 	

@@ -58,9 +58,20 @@ public class ShaderProgram
 
 	public void setUniform(String uniformName, Uniform uniform)
 	{
-		int uniformId = glGetUniformLocation(shaderId, uniformName);
+		int uniformId = getUniform(uniformName);
+		System.out.println("Name: " + uniformName + " UniformID: " + uniformId);
 
 		uniform.getType().setUniform(uniformId, uniform.getValue());
+	}
+	
+	private int getUniform(String uniformName) 
+	{
+		int uniformId = glGetUniformLocation(shaderId, uniformName);
+		
+		if (uniformId < 0)
+			throw new IllegalArgumentException("Uniform ID cannot be less than 0. Name: " + uniformName + " ID: " + uniformId);
+		
+		return uniformId;
 	}
 
 	public void clearUniform(String uniformName)

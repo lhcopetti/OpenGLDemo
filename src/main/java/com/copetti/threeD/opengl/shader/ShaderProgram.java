@@ -60,7 +60,6 @@ public class ShaderProgram
 	{
 		int uniformId = glGetUniformLocation(shaderId, uniformName);
 
-		glEnableVertexAttribArray(uniformId);
 		uniform.getType().setUniform(uniformId, uniform.getValue());
 	}
 

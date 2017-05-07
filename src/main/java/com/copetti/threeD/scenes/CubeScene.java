@@ -2,16 +2,19 @@ package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.joml.Vector3f;
-
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.NormalCalculation;
+import com.copetti.threeD.opengl.light.DirectionalLight;
+import com.copetti.threeD.opengl.light.Material;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
 public class CubeScene extends GameScene
 {
+
+	private Material material;
+	private DirectionalLight light;
 
 	public CubeScene()
 	{
@@ -98,9 +101,21 @@ public class CubeScene extends GameScene
 				.newBuilder() //
 				.addVector3fAttribute("aPosition", vertexData) //
 				.addVector3fAttribute("aColor", arrayColors) //
-				.addVector3fAttribute("aNormal", NormalCalculation.calculateNormal(vertexData)) //
+				.addVector3fAttribute("aNormal",
+						NormalCalculation.calculateNormal(vertexData)) //
 				.loadShaderFromResource("cube_shader") //
 				.build();
+
+		material = new Material();
+		material.getAmbient().set(1.f, 1.f, 1.f);
+		material.getDiffuse().set(.8f, .6f, .6f);
+		material.getSpecular().set(1.f, 1.f, 1.f);
+
+		light = new DirectionalLight();
+		light.getAmbient().set(.1f, .1f, .1f);
+		light.getPosition().set(0.5f, 0.f, 2.f);
+		light.getDiffuse().set(1.f, 1.f, .8f);
+		light.getSpecular().set(1.f, 1.f, 1.f);
 	}
 
 	@Override
@@ -122,17 +137,14 @@ public class CubeScene extends GameScene
 	{
 
 	}
-	
+
 	@Override
 	public void doDraw(Mesh mesh)
 	{
 		mesh.setUniform("uCameraPosition", camera.getPosition());
-		mesh.setUniform("uAmbientLight", new Vector3f(.1f, .1f, .1f));
-		mesh.setUniform("uLightPos", new Vector3f(0.5f, 0f, 1f));
-		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
-		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
-		mesh.setUniform("uSpecularPower", new Float(250.f));
 		mesh.setUniform("uAttenuationFactor", new Float(.5f));
+		light.apply(mesh);
+		material.apply(mesh);
 	}
 
 }

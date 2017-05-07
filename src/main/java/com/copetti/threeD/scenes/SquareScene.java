@@ -11,7 +11,7 @@ import com.copetti.threeD.opengl.array.ArrayBufferFactory;
 import com.copetti.threeD.opengl.array.IndexBuffer;
 
 
-public class SquareScene implements GameScene
+public class SquareScene extends GameScene
 {
 
 	private String vertexShader;

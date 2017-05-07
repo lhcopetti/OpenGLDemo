@@ -13,7 +13,7 @@ import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
-public class PentagonScene implements GameScene
+public class PentagonScene extends GameScene
 {
 
 	private float angle;

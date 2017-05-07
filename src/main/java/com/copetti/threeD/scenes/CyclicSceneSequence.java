@@ -13,7 +13,7 @@ import com.copetti.threeD.input.InputAction;
 import com.copetti.threeD.input.InputEvent;
 
 
-public class CyclicSceneSequence implements GameScene
+public class CyclicSceneSequence extends GameScene
 {
 
 	List<Class<? extends GameScene>> scenes;
@@ -24,6 +24,7 @@ public class CyclicSceneSequence implements GameScene
 	public CyclicSceneSequence()
 			throws InstantiationException, IllegalAccessException
 	{
+		super(false);
 		this.scenes = new ArrayList<>();
 		this.scenes.addAll(loadScenes());
 

@@ -3,26 +3,15 @@ package com.copetti.threeD.scenes;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.copetti.threeD.game.GameScene;
-import com.copetti.threeD.game.KeyboardControlledAngles;
-import com.copetti.threeD.input.InputEvent;
-import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
-public class CubeScene implements GameScene
+public class CubeScene extends GameScene
 {
-
-	private Mesh mesh;
-	private KeyboardControlledAngles angleTransform;
 
 	public CubeScene()
 	{
-	}
-
-	@Override
-	public void handleInput(InputEvent input)
-	{
-		angleTransform.handleInput(input);
+		super(true);
 	}
 
 	@Override
@@ -101,7 +90,6 @@ public class CubeScene implements GameScene
 				for( int k = 0; k < 3; k++ )
 					arrayColors[gIndex++] = colorsData[i + k];
 
-		angleTransform = new KeyboardControlledAngles();
 		mesh = MeshBuilder //
 				.newBuilder() //
 				.addVector3fAttribute("aPosition", vertexData) //
@@ -116,21 +104,4 @@ public class CubeScene implements GameScene
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 	}
-
-	@Override
-	public void update(float deltaTime)
-	{
-		angleTransform.update(deltaTime);
-	}
-
-	@Override
-	public void draw()
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.3f, 0.3f, 0.7f, 1.0f);
-
-		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
-		mesh.draw();
-	}
-
 }

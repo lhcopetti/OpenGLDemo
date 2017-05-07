@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
 
-public class TriangleScene implements GameScene
+public class TriangleScene extends GameScene
 {
 
 	private static final String VERTEX_SHADER = "#version 330\n"

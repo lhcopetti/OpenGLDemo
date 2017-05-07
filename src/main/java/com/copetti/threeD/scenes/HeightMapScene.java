@@ -27,7 +27,7 @@ import com.copetti.threeD.shapes.BufferImageHeightMapBuilder;
 import com.copetti.threeD.shapes.Grid2DCompliantBuilder;
 
 
-public class HeightMapScene implements GameScene
+public class HeightMapScene extends GameScene
 {
 
 	private Mesh mesh;

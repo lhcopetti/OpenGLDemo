@@ -14,7 +14,7 @@ import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.RectangleMeshVertices;
 
-public class SinScene implements GameScene {
+public class SinScene extends GameScene {
 
 	private KeyboardControlledAngles angleTransform;
 	private Mesh mesh;

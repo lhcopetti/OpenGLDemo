@@ -13,7 +13,7 @@ import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.RectangleMeshVertices;
 
 
-public class FloorScene implements GameScene
+public class FloorScene extends GameScene
 {
 
 	private static final int NUM_VERTICES_WIDTH = 20;

@@ -15,7 +15,7 @@ import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.SphericalMeshVertices;
 
 
-public class SphereScene implements GameScene
+public class SphereScene extends GameScene
 {
 
 	private static final int NUM_AZIMUTH_DIVISIONS = 15;

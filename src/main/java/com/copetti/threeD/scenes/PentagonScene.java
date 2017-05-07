@@ -13,7 +13,7 @@ import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
-public class PentagonScene implements GameScene
+public class PentagonScene extends GameScene
 {
 
 	private float angle;
@@ -38,11 +38,7 @@ public class PentagonScene implements GameScene
 	{
 	}
 
-	public void update(float deltaTime)
-	{
-		angle += deltaTime / 2;
-	}
-
+	@Override
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -50,6 +46,12 @@ public class PentagonScene implements GameScene
 
 		mesh.setUniform("uWorld", new Matrix4f().rotateZ(angle));
 		mesh.draw();
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		angle += deltaTime / 2;
 	}
 
 }

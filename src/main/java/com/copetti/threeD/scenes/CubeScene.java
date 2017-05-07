@@ -2,27 +2,20 @@ package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.joml.Vector3f;
+
 import com.copetti.threeD.game.GameScene;
-import com.copetti.threeD.game.KeyboardControlledAngles;
-import com.copetti.threeD.input.InputEvent;
+import com.copetti.threeD.math.NormalCalculation;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
-public class CubeScene implements GameScene
+public class CubeScene extends GameScene
 {
-
-	private Mesh mesh;
-	private KeyboardControlledAngles angleTransform;
 
 	public CubeScene()
 	{
-	}
-
-	@Override
-	public void handleInput(InputEvent input)
-	{
-		angleTransform.handleInput(input);
+		super(true);
 	}
 
 	@Override
@@ -83,12 +76,12 @@ public class CubeScene implements GameScene
 
 		float[] colorsData = new float[]
 		{ //
-				1.0f, 1.0f, 1.0f, //
+				0.0f, 0f, 0f, //
 				0.0f, 0.0f, 0.0f, //
-				1.f, 0.0f, 0.0f, //
-				0f, 1f, 0.f, //
-				0.0f, 0.f, 1.f, //
-				0.5f, .5f, 0.5f, //
+				0.f, 0.0f, 0.0f, //
+				0f, 0f, 0.f, //
+				0.0f, 0.f, 0.f, //
+				0.0f, .0f, 0.0f, //
 
 		}; //
 
@@ -101,13 +94,20 @@ public class CubeScene implements GameScene
 				for( int k = 0; k < 3; k++ )
 					arrayColors[gIndex++] = colorsData[i + k];
 
-		angleTransform = new KeyboardControlledAngles();
 		mesh = MeshBuilder //
 				.newBuilder() //
 				.addVector3fAttribute("aPosition", vertexData) //
 				.addVector3fAttribute("aColor", arrayColors) //
+				.addVector3fAttribute("aNormal", NormalCalculation.calculateNormal(vertexData)) //
 				.loadShaderFromResource("cube_shader") //
 				.build();
+	}
+
+	@Override
+	public void clearBackground()
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 	}
 
 	@Override
@@ -118,19 +118,21 @@ public class CubeScene implements GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
+	public void doUpdate(float deltaTime)
 	{
-		angleTransform.update(deltaTime);
+		// TODO Auto-generated method stub
+
 	}
-
+	
 	@Override
-	public void draw()
+	public void doDraw(Mesh mesh)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.3f, 0.3f, 0.7f, 1.0f);
-
-		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
-		mesh.draw();
+		mesh.setUniform("uCameraPosition", camera.getPosition());
+		mesh.setUniform("uAmbientLight", new Vector3f(.1f, .1f, .1f));
+		mesh.setUniform("uLightDir", new Vector3f(+.5f, 0f, -.1f));
+		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
+		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
+		mesh.setUniform("uSpecularPower", new Float(1024.0));
 	}
 
 }

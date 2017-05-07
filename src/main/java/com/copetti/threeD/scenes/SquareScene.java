@@ -11,7 +11,7 @@ import com.copetti.threeD.opengl.array.ArrayBufferFactory;
 import com.copetti.threeD.opengl.array.IndexBuffer;
 
 
-public class SquareScene implements GameScene
+public class SquareScene extends GameScene
 {
 
 	private String vertexShader;
@@ -111,11 +111,6 @@ public class SquareScene implements GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
-	{
-	}
-
-	@Override
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -136,6 +131,13 @@ public class SquareScene implements GameScene
 		positions.unbind();
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -6,29 +6,18 @@ import org.joml.Vector3f;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.game.KeyboardControlledAngles;
-import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector3fGridFlattener;
-import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.SphericalMeshVertices;
 
 
-public class SphereScene implements GameScene
+public class SphereScene extends GameScene
 {
 
 	private static final int NUM_AZIMUTH_DIVISIONS = 15;
 	private static final int NUM_POLAR_DIVISIONS = 15;
-
-	private KeyboardControlledAngles angleTransform;
-	private Mesh mesh;
-	
-	@Override
-	public void handleInput(InputEvent input)
-	{
-		angleTransform.handleInput(input);
-	}
 
 	@Override
 	public void onEnter()
@@ -63,18 +52,10 @@ public class SphereScene implements GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
+	public void doUpdate(float deltaTime)
 	{
-		angleTransform.update(deltaTime);
+		// TODO Auto-generated method stub
+		
 	}
-
-	@Override
-	public void draw()
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f, 0.4f, 0.4f, 1.0f);
-
-		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
-		mesh.draw();
-	}
+	
 }

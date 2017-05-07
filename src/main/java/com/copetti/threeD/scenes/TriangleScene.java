@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
 
-public class TriangleScene implements GameScene
+public class TriangleScene extends GameScene
 {
 
 	private static final String VERTEX_SHADER = "#version 330\n"
@@ -96,9 +96,6 @@ public class TriangleScene implements GameScene
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	public void update(float deltaTime)
-	{
-	}
 
 	public void draw()
 	{
@@ -120,6 +117,13 @@ public class TriangleScene implements GameScene
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

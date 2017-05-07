@@ -75,6 +75,5 @@ public class ShaderProgram
 	public void clearUniform(String uniformName)
 	{
 		int uniformId = glGetUniformLocation(shaderId, uniformName);
-		glDisableVertexAttribArray(uniformId);
 	}
 }

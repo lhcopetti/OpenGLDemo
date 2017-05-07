@@ -120,7 +120,6 @@ public class CubeScene extends GameScene
 	@Override
 	public void doUpdate(float deltaTime)
 	{
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -129,10 +128,10 @@ public class CubeScene extends GameScene
 	{
 		mesh.setUniform("uCameraPosition", camera.getPosition());
 		mesh.setUniform("uAmbientLight", new Vector3f(.1f, .1f, .1f));
-		mesh.setUniform("uLightDir", new Vector3f(+.5f, 0f, -.1f));
+		mesh.setUniform("uLightPos", new Vector3f(0.5f, 0f, 1f));
 		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
 		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
-		mesh.setUniform("uSpecularPower", new Float(1024.0));
+		mesh.setUniform("uSpecularPower", new Float(250.f));
 	}
 
 }

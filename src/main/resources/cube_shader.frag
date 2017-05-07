@@ -1,9 +1,6 @@
 #version 330
 			
 uniform vec3 uAmbientLight;
-
-uniform vec3 uLightDir;
-
 uniform vec3 uDiffuseLight;
 
 uniform vec3 uSpecularLight;
@@ -14,10 +11,11 @@ out vec4 out_color;
 in vec3 vNormal;
 in vec3 vViewPath;
 in vec4 vColor;
+in vec3 vLightDir;
 
 void main() 
 {
-	vec3 L = normalize(uLightDir);
+	vec3 L = normalize(vLightDir);
 	vec3 N = normalize(vNormal);
 	vec3 V = normalize(vViewPath);
 

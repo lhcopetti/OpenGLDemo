@@ -5,7 +5,7 @@ uniform mat4 uView;
 uniform mat4 uWorld;
 
 uniform vec3 uCameraPosition;
-uniform vec3 uLightPos;
+uniform vec3 uPositionLight;
 
 in vec3 aPosition;
 in vec3 aColor;
@@ -24,5 +24,5 @@ void main()
 	vNormal = (uWorld * vec4(aNormal, 0.0)).xyz;
 	vViewPath = uCameraPosition - worldPos.xyz;
 	vColor = vec4(aColor, 1.0);
-	vLightDir = (worldPos - vec4(uLightPos, 0.0)).xyz;
+	vLightDir = (worldPos - vec4(uPositionLight, 0.0)).xyz;
 }

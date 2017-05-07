@@ -13,18 +13,6 @@ import com.copetti.threeD.opengl.mesh.Mesh;
 public class MaterialTest
 {
 
-	@Test
-	public void testApplyAmbientMaterial() throws NoSuchFieldException,
-			SecurityException, IllegalArgumentException, IllegalAccessException
-	{
-		Material material = new Material();
-		Mesh mock = mock(Mesh.class);
-		Vector3f ambientMaterial = new Vector3f(0.f, 1.f, 2.f);
-		material.getAmbient().set(ambientMaterial);
-		material.applyAmbient(mock);
-		verify(mock).setUniform("uAmbientMaterial", ambientMaterial);
-	}
-
 	private Material material;
 	private Mesh mock;
 

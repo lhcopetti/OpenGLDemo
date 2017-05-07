@@ -7,7 +7,6 @@ import com.copetti.threeD.input.InputHandler;
 import com.copetti.threeD.input.InputManager;
 import com.copetti.threeD.opengl.camera.Camera;
 import com.copetti.threeD.opengl.mesh.Mesh;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 
 public abstract class GameScene implements InputHandler
@@ -41,18 +40,27 @@ public abstract class GameScene implements InputHandler
 		doUpdate(deltaTime);
 	}
 
-	public void draw()
+	public void clearBackground()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.9f, 0.3f, 0.1f, 1.0f);
+	}
 
-		if (enableCamera)
-		{
-			mesh.setUniform("uEnableCamera", new Boolean(enableCamera));
-			mesh.setUniform("uView", camera.getViewMatrix());
-			mesh.setUniform("uProjection", camera.getProjectionMatrix());
-		}
+	public void setCamera()
+	{
+		mesh.setUniform("uView", camera.getViewMatrix());
+		mesh.setUniform("uProjection", camera.getProjectionMatrix());
+	}
+
+	public void draw()
+	{
+		clearBackground();
+
+		if (enableCamera) setCamera();
+
 		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
+
+		doDraw(mesh);
 		mesh.draw();
 	}
 
@@ -74,6 +82,6 @@ public abstract class GameScene implements InputHandler
 	public void doDraw(Mesh mesh)
 	{
 	}
-	
+
 	public abstract void doUpdate(float deltaTime);
 }

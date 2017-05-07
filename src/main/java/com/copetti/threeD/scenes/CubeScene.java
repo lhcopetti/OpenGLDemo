@@ -2,7 +2,11 @@ package com.copetti.threeD.scenes;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.joml.Vector3f;
+
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.math.NormalCalculation;
+import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
@@ -72,12 +76,12 @@ public class CubeScene extends GameScene
 
 		float[] colorsData = new float[]
 		{ //
-				1.0f, 1.0f, 1.0f, //
+				0.0f, 0f, 0f, //
 				0.0f, 0.0f, 0.0f, //
-				1.f, 0.0f, 0.0f, //
-				0f, 1f, 0.f, //
-				0.0f, 0.f, 1.f, //
-				0.5f, .5f, 0.5f, //
+				0.f, 0.0f, 0.0f, //
+				0f, 0f, 0.f, //
+				0.0f, 0.f, 0.f, //
+				0.0f, .0f, 0.0f, //
 
 		}; //
 
@@ -94,8 +98,16 @@ public class CubeScene extends GameScene
 				.newBuilder() //
 				.addVector3fAttribute("aPosition", vertexData) //
 				.addVector3fAttribute("aColor", arrayColors) //
+				.addVector3fAttribute("aNormal", NormalCalculation.calculateNormal(vertexData)) //
 				.loadShaderFromResource("cube_shader") //
 				.build();
+	}
+
+	@Override
+	public void clearBackground()
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 	}
 
 	@Override
@@ -109,6 +121,18 @@ public class CubeScene extends GameScene
 	public void doUpdate(float deltaTime)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
+	
+	@Override
+	public void doDraw(Mesh mesh)
+	{
+		mesh.setUniform("uCameraPosition", camera.getPosition());
+		mesh.setUniform("uAmbientLight", new Vector3f(.1f, .1f, .1f));
+		mesh.setUniform("uLightDir", new Vector3f(+.5f, 0f, -.1f));
+		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
+		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
+		mesh.setUniform("uSpecularPower", new Float(1024.0));
+	}
+
 }

@@ -3,21 +3,23 @@
 uniform mat4 uProjection;
 uniform mat4 uView;
 uniform mat4 uWorld;
-uniform mat4 uWorld2;
-uniform bool uEnableCamera;
+
+uniform vec3 uCameraPosition;
 
 in vec3 aPosition;
 in vec3 aColor;
+in vec3 aNormal;
 
 out vec4 vColor;
+out vec3 vNormal;
+out vec3 vViewPath;
 
 void main() 
 {
-	mat4 camera = uProjection * uView;
+	vec4 worldPos = uWorld * vec4(aPosition, 1.0);
+	gl_Position = uProjection * uView * worldPos;
 
-	if (uEnableCamera)
-		gl_Position = uProjection * uView * uWorld * vec4(aPosition, 1.0);
-	else
-		gl_Position = uWorld * vec4(aPosition, 1.0);
+	vNormal = (uWorld * vec4(aNormal, 0.0)).xyz;
+	vViewPath = uCameraPosition - worldPos.xyz;
 	vColor = vec4(aColor, 1.0);
 }

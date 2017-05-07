@@ -1,14 +1,13 @@
 package com.copetti.threeD.opengl.uniform;
 
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
 
 import java.nio.FloatBuffer;
 import java.util.stream.Stream;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
@@ -47,6 +46,7 @@ public enum UniformType
 	},
 	OneFloat(Float.class)
 	{
+
 		public void setUniform(int id, Object value)
 		{
 			float f = (float) value;
@@ -61,6 +61,16 @@ public enum UniformType
 		{
 			glUniform1i(id,
 					((boolean) value) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		}
+	},
+	Vector3f(Vector3f.class)
+	{
+
+		@Override
+		public void setUniform(int id, Object value)
+		{
+			Vector3f v = (Vector3f) value;
+			glUniform3f(id, v.x, v.y, v.z);
 		}
 	};
 

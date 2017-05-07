@@ -132,6 +132,7 @@ public class CubeScene extends GameScene
 		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
 		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
 		mesh.setUniform("uSpecularPower", new Float(250.f));
+		mesh.setUniform("uAttenuationFactor", new Float(.5f));
 	}
 
 }

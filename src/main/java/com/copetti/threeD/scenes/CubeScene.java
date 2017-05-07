@@ -6,12 +6,15 @@ import org.joml.Vector3f;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.NormalCalculation;
+import com.copetti.threeD.opengl.light.Material;
 import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 
 
 public class CubeScene extends GameScene
 {
+
+	private Material material;
 
 	public CubeScene()
 	{
@@ -98,9 +101,15 @@ public class CubeScene extends GameScene
 				.newBuilder() //
 				.addVector3fAttribute("aPosition", vertexData) //
 				.addVector3fAttribute("aColor", arrayColors) //
-				.addVector3fAttribute("aNormal", NormalCalculation.calculateNormal(vertexData)) //
+				.addVector3fAttribute("aNormal",
+						NormalCalculation.calculateNormal(vertexData)) //
 				.loadShaderFromResource("cube_shader") //
 				.build();
+
+		material = new Material();
+		material.getAmbient().set(.5f, 1.f, 1.f);
+		material.getDiffuse().set(.8f, .5f, .5f);
+		material.getSpecular().set(1.f, 1.f, 1.f);
 	}
 
 	@Override
@@ -122,7 +131,7 @@ public class CubeScene extends GameScene
 	{
 
 	}
-	
+
 	@Override
 	public void doDraw(Mesh mesh)
 	{
@@ -131,8 +140,8 @@ public class CubeScene extends GameScene
 		mesh.setUniform("uLightPos", new Vector3f(0.5f, 0f, 1f));
 		mesh.setUniform("uDiffuseLight", new Vector3f(1.f, 1.f, .8f));
 		mesh.setUniform("uSpecularLight", new Vector3f(1.f, 1.f, 1f));
-		mesh.setUniform("uSpecularPower", new Float(250.f));
 		mesh.setUniform("uAttenuationFactor", new Float(.5f));
+		material.apply(mesh);
 	}
 
 }

@@ -96,9 +96,6 @@ public class TriangleScene extends GameScene
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	public void update(float deltaTime)
-	{
-	}
 
 	public void draw()
 	{
@@ -120,6 +117,13 @@ public class TriangleScene extends GameScene
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

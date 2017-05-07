@@ -8,7 +8,6 @@ import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector2fGridFlattener;
-import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.RectangleMeshVertices;
 
@@ -19,8 +18,6 @@ public class FloorScene extends GameScene
 	private static final int NUM_VERTICES_WIDTH = 20;
 	private static final int NUM_VERTICES_HEIGHT = 20;
 	private static final float WINDOW_FILL_PROPOTION = .8f;
-
-	private Mesh mesh;
 
 	@Override
 	public void onEnter()
@@ -55,7 +52,7 @@ public class FloorScene extends GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
+	public void doUpdate(float deltaTime)
 	{
 	}
 

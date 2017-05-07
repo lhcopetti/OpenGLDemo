@@ -111,11 +111,6 @@ public class SquareScene extends GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
-	{
-	}
-
-	@Override
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -136,6 +131,13 @@ public class SquareScene extends GameScene
 		positions.unbind();
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

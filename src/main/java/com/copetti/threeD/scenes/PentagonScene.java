@@ -38,11 +38,7 @@ public class PentagonScene extends GameScene
 	{
 	}
 
-	public void update(float deltaTime)
-	{
-		angle += deltaTime / 2;
-	}
-
+	@Override
 	public void draw()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -50,6 +46,12 @@ public class PentagonScene extends GameScene
 
 		mesh.setUniform("uWorld", new Matrix4f().rotateZ(angle));
 		mesh.draw();
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		angle += deltaTime / 2;
 	}
 
 }

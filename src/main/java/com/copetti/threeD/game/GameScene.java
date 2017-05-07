@@ -34,7 +34,7 @@ public abstract class GameScene implements InputHandler
 		angleTransform = new KeyboardControlledAngles();
 	}
 
-	public void update(float deltaTime)
+	public final void update(float deltaTime)
 	{
 		angleTransform.update(deltaTime);
 		inputManager.pollInputEvents();
@@ -46,9 +46,9 @@ public abstract class GameScene implements InputHandler
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.9f, 0.3f, 0.1f, 1.0f);
 
-		mesh.setUniform("uEnableCamera", new Boolean(enableCamera));
 		if (enableCamera)
 		{
+			mesh.setUniform("uEnableCamera", new Boolean(enableCamera));
 			mesh.setUniform("uView", camera.getViewMatrix());
 			mesh.setUniform("uProjection", camera.getProjectionMatrix());
 		}
@@ -71,11 +71,9 @@ public abstract class GameScene implements InputHandler
 	{
 	}
 
-	public void doUpdate(float deltaTime)
-	{
-	}
-
 	public void doDraw(Mesh mesh)
 	{
 	}
+	
+	public abstract void doUpdate(float deltaTime);
 }

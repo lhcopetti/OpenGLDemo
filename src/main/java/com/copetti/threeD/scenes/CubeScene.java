@@ -104,4 +104,11 @@ public class CubeScene extends GameScene
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -10,14 +10,11 @@ import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector2fGridFlattener;
-import com.copetti.threeD.opengl.mesh.Mesh;
 import com.copetti.threeD.opengl.mesh.MeshBuilder;
 import com.copetti.threeD.shapes.RectangleMeshVertices;
 
 public class SinScene extends GameScene {
 
-	private KeyboardControlledAngles angleTransform;
-	private Mesh mesh;
 	private float runningTime = 0.f;
 
 	private static final int WIDTH = 30;
@@ -60,17 +57,17 @@ public class SinScene extends GameScene {
 	}
 
 	@Override
-	public void update(float deltaTime) {
-		runningTime += deltaTime;
-		angleTransform.update(deltaTime);
-	}
-
-	@Override
 	public void draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix().scale(0.05f));
 		mesh.setUniform("uTime", new Float(runningTime));
 		mesh.draw();
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		runningTime += deltaTime;
 	}
 
 }

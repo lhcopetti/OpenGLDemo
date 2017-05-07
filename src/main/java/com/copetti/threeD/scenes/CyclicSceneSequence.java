@@ -59,12 +59,6 @@ public class CyclicSceneSequence extends GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
-	{
-		currentScene.update(deltaTime);
-	}
-
-	@Override
 	public void handleInput(InputEvent input)
 	{
 		if (!shouldPropagate(input)) return;
@@ -117,6 +111,12 @@ public class CyclicSceneSequence extends GameScene
 	public void draw()
 	{
 		currentScene.draw();
+	}
+
+	@Override
+	public void doUpdate(float deltaTime)
+	{
+		currentScene.update(deltaTime);
 	}
 
 }

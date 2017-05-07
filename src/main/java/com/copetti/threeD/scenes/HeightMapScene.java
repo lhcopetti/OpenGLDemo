@@ -30,9 +30,6 @@ import com.copetti.threeD.shapes.Grid2DCompliantBuilder;
 public class HeightMapScene extends GameScene
 {
 
-	private Mesh mesh;
-	private KeyboardControlledAngles angleTransform;
-	
 	private String[] images;
 	private int currentImageIndex;
 	private ByteBufferImage currentImage;
@@ -144,18 +141,7 @@ public class HeightMapScene extends GameScene
 	}
 
 	@Override
-	public void update(float deltaTime)
+	public void doUpdate(float deltaTime)
 	{
-		angleTransform.update(deltaTime);
-	}
-
-	@Override
-	public void draw()
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f, 0.4f, 0.4f, 1.0f);
-
-		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
-		mesh.draw();
 	}
 }

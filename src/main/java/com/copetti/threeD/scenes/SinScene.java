@@ -22,7 +22,7 @@ public class SinScene extends GameScene {
 	private static final float WINDOW_FILL_PROPOTION = 35f;
 
 	@Override
-	public void onEnter() {
+	public void doOnEnter() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
@@ -45,7 +45,7 @@ public class SinScene extends GameScene {
 	}
 
 	@Override
-	public void onExit() {
+	public void doOnExit() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);

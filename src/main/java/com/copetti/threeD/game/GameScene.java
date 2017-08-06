@@ -71,15 +71,20 @@ public abstract class GameScene implements InputHandler
 		angleTransform.handleInput(input);
 		inputManager.handleInput(input);
 	}
-
-	public void onEnter()
+	
+	public final void onEnter()
 	{
+		doOnEnter();
 	}
 
-	public void onExit()
+	public final void onExit()
 	{
+		doOnExit();
 	}
 
+	protected abstract void doOnEnter();
+	protected abstract void doOnExit();
+	
 	public void doDraw(Mesh mesh)
 	{
 	}

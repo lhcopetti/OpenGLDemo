@@ -43,13 +43,13 @@ public class CyclicSceneSequence extends GameScene
 	}
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
 		currentScene.onEnter();
 	}
 
 	@Override
-	public void onExit()
+	public void doOnExit()
 	{
 		currentScene.onExit();
 	}

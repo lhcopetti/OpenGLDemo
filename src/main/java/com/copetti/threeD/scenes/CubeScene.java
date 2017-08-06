@@ -23,7 +23,7 @@ public class CubeScene extends GameScene
 	}
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
@@ -127,7 +127,7 @@ public class CubeScene extends GameScene
 	}
 
 	@Override
-	public void onExit()
+	public void doOnExit()
 	{
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);

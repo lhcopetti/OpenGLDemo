@@ -20,7 +20,7 @@ public class SphereScene extends GameScene
 	private static final int NUM_POLAR_DIVISIONS = 15;
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
@@ -44,7 +44,7 @@ public class SphereScene extends GameScene
 	}
 
 	@Override
-	public void onExit()
+	public void doOnExit()
 	{
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);

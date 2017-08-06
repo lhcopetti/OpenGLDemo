@@ -59,7 +59,7 @@ public class TriangleScene extends GameScene
 		return program;
 	}
 
-	public void onEnter()
+	public void doOnEnter()
 	{
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
@@ -87,7 +87,7 @@ public class TriangleScene extends GameScene
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
-	public void onExit()
+	public void doOnExit()
 	{
 		glDeleteBuffers(positions);
 		glDeleteProgram(shader);

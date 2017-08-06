@@ -20,7 +20,7 @@ public class FloorScene extends GameScene
 	private static final float WINDOW_FILL_PROPOTION = .8f;
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
 		Grid2D<Vector2f> grid = RectangleMeshVertices
 				.newGrid(NUM_VERTICES_WIDTH, NUM_VERTICES_HEIGHT);
@@ -46,7 +46,7 @@ public class FloorScene extends GameScene
 	}
 
 	@Override
-	public void onExit()
+	public void doOnExit()
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}

@@ -23,7 +23,7 @@ public class PentagonScene extends GameScene
 	{
 	}
 
-	public void onEnter()
+	public void doOnEnter()
 	{
 		float[] vertexData = Pentagon.createPentagon(new Vector2f(0f, .5f),
 				0.5f);
@@ -34,7 +34,7 @@ public class PentagonScene extends GameScene
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
-	public void onExit()
+	public void doOnExit()
 	{
 	}
 

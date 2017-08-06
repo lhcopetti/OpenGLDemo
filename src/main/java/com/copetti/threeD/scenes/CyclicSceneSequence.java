@@ -1,16 +1,13 @@
 package com.copetti.threeD.scenes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.lwjgl.glfw.GLFW;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 import com.copetti.threeD.game.GameScene;
-import com.copetti.threeD.input.InputAction;
-import com.copetti.threeD.input.InputEvent;
+import com.copetti.threeD.input.*;
 
 
 public class CyclicSceneSequence extends GameScene
@@ -24,7 +21,6 @@ public class CyclicSceneSequence extends GameScene
 	public CyclicSceneSequence()
 			throws InstantiationException, IllegalAccessException
 	{
-		super(false);
 		this.scenes = new ArrayList<>();
 		this.scenes.addAll(loadScenes());
 

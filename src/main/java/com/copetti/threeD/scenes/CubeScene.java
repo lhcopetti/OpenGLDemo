@@ -3,11 +3,10 @@ package com.copetti.threeD.scenes;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.game.scene.SceneConfigurationBuilder;
 import com.copetti.threeD.math.NormalCalculation;
-import com.copetti.threeD.opengl.light.DirectionalLight;
-import com.copetti.threeD.opengl.light.Material;
-import com.copetti.threeD.opengl.mesh.Mesh;
-import com.copetti.threeD.opengl.mesh.MeshBuilder;
+import com.copetti.threeD.opengl.light.*;
+import com.copetti.threeD.opengl.mesh.*;
 
 
 public class CubeScene extends GameScene
@@ -18,7 +17,9 @@ public class CubeScene extends GameScene
 
 	public CubeScene()
 	{
-		super(true);
+		super(SceneConfigurationBuilder.newBuilder() //
+				.enableCamera() //
+				.build());
 	}
 
 	@Override

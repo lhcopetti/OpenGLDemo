@@ -2,6 +2,8 @@ package com.copetti.threeD.game;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import com.copetti.threeD.game.scene.SceneConfiguration;
+import com.copetti.threeD.game.scene.SceneConfigurationBuilder;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.input.InputHandler;
 import com.copetti.threeD.input.InputManager;
@@ -18,16 +20,15 @@ public abstract class GameScene implements InputHandler
 
 	protected KeyboardControlledAngles angleTransform;
 
-	private boolean enableCamera;
-
-	public GameScene()
-	{
-		this(false);
+	private SceneConfiguration config;
+	
+	public GameScene() {
+		this(SceneConfigurationBuilder.defaults());
 	}
 
-	public GameScene(boolean enableCamera)
+	public GameScene(SceneConfiguration config)
 	{
-		this.enableCamera = enableCamera;
+		this.config = config;
 		camera = new Camera();
 		inputManager = new InputManager();
 		angleTransform = new KeyboardControlledAngles();
@@ -56,7 +57,7 @@ public abstract class GameScene implements InputHandler
 	{
 		clearBackground();
 
-		if (enableCamera) setCamera();
+		if (config.isCameraEnabled()) setCamera();
 
 		mesh.setUniform("uWorld", angleTransform.getTransformationMatrix());
 

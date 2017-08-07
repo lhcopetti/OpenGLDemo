@@ -6,13 +6,12 @@ import static org.lwjgl.opengl.GL30.*;
 
 import com.copetti.threeD.classpath.Resource;
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.game.scene.SceneConfigurationBuilder;
 import com.copetti.threeD.opengl.array.ArrayBuffer;
 import com.copetti.threeD.opengl.array.ArrayBufferFactory;
 import com.copetti.threeD.opengl.array.IndexBuffer;
 
-
-public class SquareScene extends GameScene
-{
+public class SquareScene extends GameScene {
 
 	private String vertexShader;
 	private String fragmentShader;
@@ -26,38 +25,38 @@ public class SquareScene extends GameScene
 	private float[] vertexData;
 	private int[] indexData;
 
-	public SquareScene()
-	{
+	public SquareScene() {
+		super(SceneConfigurationBuilder.newBuilder() //
+				.enable3D() //
+				.enableBackwardDrawing() //
+				.build());
+
 		vertexShader = Resource.readAllText("square_shader.vert");
 		fragmentShader = Resource.readAllText("square_shader.frag");
 	}
 
-	private int compileShader(int shaderType, String code)
-	{
+	private int compileShader(int shaderType, String code) {
 		int shader = glCreateShader(shaderType);
 		glShaderSource(shader, code);
 		glCompileShader(shader);
 
-		if (glGetShaderi(shaderType,
-				GL_COMPILE_STATUS) == GL_FALSE) { throw new RuntimeException(
-						"Failed to compile Shader!"); }
+		if (glGetShaderi(shaderType, GL_COMPILE_STATUS) == GL_FALSE) {
+			throw new RuntimeException("Failed to compile Shader!");
+		}
 
 		return shader;
 	}
 
-	private int linkProgram(int... shaders)
-	{
+	private int linkProgram(int... shaders) {
 		int program = glCreateProgram();
-		for( int shader : shaders )
+		for (int shader : shaders)
 			glAttachShader(program, shader);
 
 		glLinkProgram(program);
 		if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE)
-			throw new RuntimeException(
-					"Failed to link shaders: " + glGetProgramInfoLog(program));
+			throw new RuntimeException("Failed to link shaders: " + glGetProgramInfoLog(program));
 
-		for( int shader : shaders )
-		{
+		for (int shader : shaders) {
 			glDetachShader(program, shader);
 			glDeleteShader(shader);
 		}
@@ -66,24 +65,18 @@ public class SquareScene extends GameScene
 	}
 
 	@Override
-	public void doOnEnter()
-	{
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-
+	public void doOnEnter() {
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 
-		vertexData = new float[]
-		{ //
+		vertexData = new float[] { //
 				-.5f, -.5f, //
 				.5f, .5f, //
 				-.5f, +.5f, //
 				0.5f, -.5f //
 		};
 
-		indexData = new int[]
-		{ //
+		indexData = new int[] { //
 				0, 1, 2, //
 				1, 0, 3 //
 		};
@@ -101,18 +94,13 @@ public class SquareScene extends GameScene
 	}
 
 	@Override
-	public void doOnExit()
-	{
+	public void doOnExit() {
 		glDeleteShader(shaderProgram);
 		glDeleteVertexArrays(vao);
-
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
 	}
 
 	@Override
-	public void draw()
-	{
+	public void draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.3f, 0.7f, 1.0f);
 
@@ -134,10 +122,9 @@ public class SquareScene extends GameScene
 	}
 
 	@Override
-	public void doUpdate(float deltaTime)
-	{
+	public void doUpdate(float deltaTime) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -31,11 +31,6 @@ public class PentagonScene extends GameScene
 		mesh = MeshBuilder.newBuilder() //
 				.addVector2fAttribute("aPosition", vertexData)
 				.loadShaderFromResource("pentagon_shader").build();
-		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-
-	public void doOnExit()
-	{
 	}
 
 	@Override
@@ -53,5 +48,4 @@ public class PentagonScene extends GameScene
 	{
 		angle += deltaTime / 2;
 	}
-
 }

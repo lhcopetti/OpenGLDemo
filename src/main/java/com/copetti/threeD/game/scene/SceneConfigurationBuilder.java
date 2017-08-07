@@ -2,7 +2,6 @@ package com.copetti.threeD.game.scene;
 
 import java.util.*;
 
-import com.copetti.threeD.opengl.camera.Camera;
 import com.copetti.threeD.opengl.command.*;
 
 public class SceneConfigurationBuilder {

@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 
 import com.copetti.threeD.game.GameScene;
 import com.copetti.threeD.game.KeyboardControlledAngles;
+import com.copetti.threeD.game.scene.SceneConfigurationBuilder;
 import com.copetti.threeD.input.InputEvent;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
@@ -21,12 +22,16 @@ public class SinScene extends GameScene {
 	private static final int HEIGHT = 30;
 	private static final float WINDOW_FILL_PROPOTION = 35f;
 
+	public SinScene() {
+		super(SceneConfigurationBuilder.newBuilder() //
+				.enable3D() //
+				.enableBackwardDrawing() //
+				.enableLineMode() //
+				.build());
+	}
+
 	@Override
 	public void doOnEnter() {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-
 		Grid2D<Vector2f> grid = RectangleMeshVertices.newGrid(WIDTH, HEIGHT);
 
 		for (Vector2f v : grid)
@@ -45,13 +50,6 @@ public class SinScene extends GameScene {
 	}
 
 	@Override
-	public void doOnExit() {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
-	}
-
-	@Override
 	public void handleInput(InputEvent input) {
 		angleTransform.handleInput(input);
 	}
@@ -65,8 +63,7 @@ public class SinScene extends GameScene {
 	}
 
 	@Override
-	public void doUpdate(float deltaTime)
-	{
+	public void doUpdate(float deltaTime) {
 		runningTime += deltaTime;
 	}
 

@@ -33,6 +33,10 @@ public class SceneConfigurationBuilder {
 		return this;
 	}
 	
+	public SceneConfigurationBuilder enableLineMode() {
+		contextCommands.add(new GLPolygonModeCommand());
+		return this;
+	}
 
 	public static SceneConfigurationBuilder newBuilder() {
 		return new SceneConfigurationBuilder();

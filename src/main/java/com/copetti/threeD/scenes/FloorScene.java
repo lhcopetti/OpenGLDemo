@@ -1,10 +1,11 @@
 package com.copetti.threeD.scenes;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.*; 
 
 import org.joml.Vector2f;
 
 import com.copetti.threeD.game.GameScene;
+import com.copetti.threeD.game.scene.*;
 import com.copetti.threeD.math.IndexUtils;
 import com.copetti.threeD.math.grid.Grid2D;
 import com.copetti.threeD.math.grid.Vector2fGridFlattener;
@@ -18,6 +19,12 @@ public class FloorScene extends GameScene
 	private static final int NUM_VERTICES_WIDTH = 20;
 	private static final int NUM_VERTICES_HEIGHT = 20;
 	private static final float WINDOW_FILL_PROPOTION = .8f;
+	
+	public FloorScene() {
+		super(SceneConfigurationBuilder.newBuilder() //
+				.enableLineMode() //
+				.build());
+	}
 
 	@Override
 	public void doOnEnter()
@@ -41,14 +48,6 @@ public class FloorScene extends GameScene
 				.setIndexBuffer(indexes) //
 				.loadShaderFromResource("floor_shader") //
 				.build();
-		// mesh.setUniform("aTranslation", new Matrix3f().trans);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-
-	@Override
-	public void doOnExit()
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
 	@Override

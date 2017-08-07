@@ -1,30 +1,22 @@
 package com.copetti.threeD.scenes;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Iterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.stream.*;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.copetti.threeD.classpath.Resource;
-import com.copetti.threeD.game.GameScene;
-import com.copetti.threeD.game.KeyboardControlledAngles;
+import com.copetti.threeD.game.*;
+import com.copetti.threeD.game.scene.SceneConfigurationBuilder;
 import com.copetti.threeD.image.ByteBufferImage;
-import com.copetti.threeD.input.InputAction;
-import com.copetti.threeD.input.InputEvent;
-import com.copetti.threeD.math.CenterSupport;
-import com.copetti.threeD.math.IndexUtils;
-import com.copetti.threeD.math.grid.Grid2D;
-import com.copetti.threeD.math.grid.Vector3fGridFlattener;
-import com.copetti.threeD.opengl.mesh.Mesh;
-import com.copetti.threeD.opengl.mesh.MeshBuilder;
-import com.copetti.threeD.shapes.BufferImageHeightMapBuilder;
-import com.copetti.threeD.shapes.Grid2DCompliantBuilder;
+import com.copetti.threeD.input.*;
+import com.copetti.threeD.math.*;
+import com.copetti.threeD.math.grid.*;
+import com.copetti.threeD.opengl.mesh.*;
+import com.copetti.threeD.shapes.*;
 
 
 public class HeightMapScene extends GameScene
@@ -36,6 +28,11 @@ public class HeightMapScene extends GameScene
 	private int step = 16;
 	
 	public HeightMapScene() {
+		super(SceneConfigurationBuilder.newBuilder() //
+				.enable3D() //
+				.enableBackwardDrawing() //
+				.enableLineMode() //
+				.build());
 		images = new String[] {"gray/mountains.png", "gray/radial.jpg", "gray/scale.png", "gray/volcano.png" };
 	}
 
@@ -55,12 +52,8 @@ public class HeightMapScene extends GameScene
 	}
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 		angleTransform = new KeyboardControlledAngles();
 		setUpHeightMap(currentImageIndex, step);
 	}
@@ -130,14 +123,6 @@ public class HeightMapScene extends GameScene
 			v.set(x, y, z);
 		}
 		return heightMap;
-	}
-
-	@Override
-	public void onExit()
-	{
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
 	@Override

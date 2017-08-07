@@ -19,15 +19,14 @@ public class CubeScene extends GameScene
 	{
 		super(SceneConfigurationBuilder.newBuilder() //
 				.enableCamera() //
+				.enable3D() //
+				.enableBackwardDrawing() //
 				.build());
 	}
 
 	@Override
-	public void onEnter()
+	public void doOnEnter()
 	{
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-
 		float[] vertexData = new float[]
 		{ //
 				/* Front */
@@ -124,13 +123,6 @@ public class CubeScene extends GameScene
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.f, 0.f, 0.f, 1.f);
-	}
-
-	@Override
-	public void onExit()
-	{
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
 	}
 
 	@Override

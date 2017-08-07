@@ -46,8 +46,8 @@ public abstract class GameScene implements InputHandler
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.9f, 0.3f, 0.1f, 1.0f);
 	}
-
-	public void setCamera()
+	
+	private void setCamera()
 	{
 		mesh.setUniform("uView", camera.getViewMatrix());
 		mesh.setUniform("uProjection", camera.getProjectionMatrix());
@@ -71,15 +71,22 @@ public abstract class GameScene implements InputHandler
 		angleTransform.handleInput(input);
 		inputManager.handleInput(input);
 	}
-
-	public void onEnter()
+	
+	public final void onEnter()
 	{
+		config.applyOnEnter(this);
+		doOnEnter();
 	}
 
-	public void onExit()
+	public final void onExit()
 	{
+		config.applyOnExit(this);
+		doOnExit();
 	}
 
+	protected void doOnEnter() { /* hook */ }
+	protected void doOnExit() { /* hook */ }
+	
 	public void doDraw(Mesh mesh)
 	{
 	}

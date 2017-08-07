@@ -74,11 +74,13 @@ public abstract class GameScene implements InputHandler
 	
 	public final void onEnter()
 	{
+		config.applyOnEnter(this);
 		doOnEnter();
 	}
 
 	public final void onExit()
 	{
+		config.applyOnExit(this);
 		doOnExit();
 	}
 

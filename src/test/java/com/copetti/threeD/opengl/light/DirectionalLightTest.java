@@ -1,11 +1,9 @@
 package com.copetti.threeD.opengl.light;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.joml.Vector3f;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import com.copetti.threeD.opengl.mesh.Mesh;
 

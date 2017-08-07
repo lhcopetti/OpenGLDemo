@@ -1,6 +1,5 @@
 package com.copetti.threeD.math;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector3f;

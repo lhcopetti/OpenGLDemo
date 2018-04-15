@@ -60,14 +60,16 @@ Draws a 3D Cube with incidence of a light source. The most interesting part of t
 
 Switch scenes: Left and Right arrow
 
-Height Map Scene: 
-	* <P>: Increase step size (smaller resolution)
-	* <M>: Decrease step size (bigger resolution)
-	* <,>: Previous image
-	* <.>: Next image
+Height Map Scene:
+
+* `Key P`: Increase step size (smaller resolution)
+* `Key M`: Decrease step size (bigger resolution)
+* `Key , (Comma)`: Previous image
+* `Key . (Period)`: Next image
 
 Height Map, Sin and Sphere scenes:
-	* <W>, <A>, <S>, <D>: Controls the angle of the object being displayed
+
+* `Keys W, A, S and D`: Controls the angle of the object being displayed
 
 
 ### Installation
